@@ -1,0 +1,111 @@
+/*
+ * To change this license header, choose License Headers in Project Properties.
+ * To change this template file, choose Tools | Templates
+ * and open the template in the editor.
+ */
+package db;
+
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.Properties;
+
+/**
+ *
+ * @author evandio.pereira
+ */
+public class DB {
+
+    private static Connection conn = null;
+
+    public static Connection getConnection() {
+
+        if (conn == null) {
+            try {
+                Properties props = loadProperties();
+                String url = props.getProperty("jdbc.url");
+                String user = props.getProperty("jdbc.username");
+                String pass = props.getProperty("jdbc.password");
+
+                conn = DriverManager.getConnection(url, user, pass);
+                 
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+        return conn;
+    }
+
+    private static void closeConnection() {
+        if (conn != null) {
+
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+
+        }
+    }
+
+    private static Properties loadProperties() {
+        try (FileInputStream fs = new FileInputStream("databaseVitaePostgres.properties")) {
+            Properties props = new Properties();
+            props.load(fs);
+            return props;
+        } catch (IOException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    public static void closeStatement(Statement st) {
+        if (st != null) {
+            try {
+                st.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+    }
+
+    public static void closeResultSet(ResultSet rs) {
+        if (rs != null) {
+            try {
+                rs.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+        }
+    }
+
+    public static void main(String [] args) {
+        Connection conn;
+        PreparedStatement stmt;
+        ResultSet rs;
+
+        try {
+            conn = DB.getConnection();
+            stmt = conn.prepareStatement("SELECT * FROM seguranca.t_formacao LIMIT 10");
+            rs = stmt.executeQuery();
+            
+            while(rs.next()){
+                System.out.println(rs.getString("dsc_formacao"));
+            }
+            
+            DB.closeStatement(stmt);
+            DB.closeResultSet(rs);
+            DB.closeConnection();
+            
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+        
+        
+
+    }
+}
