@@ -9,11 +9,14 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Properties;
+import model.dao.DaoFactory;
+import model.dao.ProfissionalDao;
+import model.entities.Profissional;
 
 /**
  *
@@ -84,28 +87,15 @@ public class DB {
     }
 
     public static void main(String [] args) {
-        Connection conn;
-        PreparedStatement stmt;
-        ResultSet rs;
-
-        try {
-            conn = DB.getConnection();
-            stmt = conn.prepareStatement("SELECT * FROM seguranca.t_formacao LIMIT 10");
-            rs = stmt.executeQuery();
-            
-            while(rs.next()){
-                System.out.println(rs.getString("dsc_formacao"));
-            }
-            
-            DB.closeStatement(stmt);
-            DB.closeResultSet(rs);
-            DB.closeConnection();
-            
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
+        
+        ProfissionalDao dao = DaoFactory.createProfissionalDao();
+        List<Profissional> listaProf = dao.localizarNome("%antonio%"); 
+        
+        for (Profissional p : listaProf ){
+            System.out.print(p.getDsc_usuario());
+            System.out.print(" - " + p.getDsc_formacao());
+            System.out.print(" - " + p.getDsc_especialidade());
+            System.out.println("");
         }
-        
-        
-
     }
 }

@@ -8,8 +8,8 @@ package application;
 import java.io.IOException;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
 
@@ -20,15 +20,20 @@ import javafx.stage.Stage;
  */
 public class Main extends Application {
 
+    //Disponibiliza o Palco para inserção de outras telas no palco principal
+    private static Scene mainScene;
+    
     
     @Override
     public void start(Stage primaryStage) {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/gui/MainView.fxml"));
-            Parent parent = loader.load();
-            Scene scene = new Scene(parent);
+            ScrollPane  scrollPane = loader.load();
+            scrollPane.setFitToHeight(true);
+            scrollPane.setFitToWidth(true);
+            mainScene = new Scene(scrollPane);
             //scene.getStylesheets().add(getClass().getResource("application.css").toExternalForm());
-            primaryStage.setScene(scene);
+            primaryStage.setScene(mainScene);
             primaryStage.setTitle("BPA - Boletim Produção Ambulatorial");
             primaryStage.show();
         } catch (IOException e) {
@@ -36,6 +41,12 @@ public class Main extends Application {
         }
     }
 
+    
+    public static Scene getMainScene(){
+        return mainScene;
+    }
+    
+    
     /**
      * @param args the command line arguments
      */
