@@ -6,19 +6,19 @@
 package gui;
 
 import application.Main;
-import gui.util.Alerts;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.Consumer;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Alert;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.LoteBpaService;
 
 /**
  *
@@ -33,9 +33,12 @@ public class MainViewController implements Initializable {
     private MenuItem menuItemCadastroBpa;
     
     public void onMenuItemCadastroBpaAction(){
-        loadView("/gui/BpaView.fxml");
+        //Função de inicialização como parêmetro. Utilização de expressão Lambida
+        loadView("/gui/BpaView.fxml", (BpaViewController controller) -> {
+            controller.setLoteBpaService(new LoteBpaService());
+            controller.updateTableView();
+        } );
     }
-    
     
     //Janela do Sobre
     @FXML
@@ -43,13 +46,13 @@ public class MainViewController implements Initializable {
     
     @FXML
     public void onMenuItemSobreAction() {
-        loadView("/gui/Sobre.fxml");
+        loadView("/gui/Sobre.fxml", x -> {});
     }
     
     
     //synchronized garante que as threds serao todas executadas sem interrupção 
     
-    private synchronized void loadView(String absoluteName){
+    private synchronized <T> void loadView(String absoluteName, Consumer<T> initializingAction){
         
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
@@ -72,6 +75,12 @@ public class MainViewController implements Initializable {
             
             //adiciona os filhos da tela Sobre
             mainVbox.getChildren().addAll(newVBox.getChildren());
+            
+            
+            //Ativar a funcao passada pelo consumer
+            T controller = loader.getController();
+           initializingAction.accept(controller);
+            
             
         } catch (IOException e) {
             //Alerts.showAlert("IO Exception", "Erro ao carregar a página", e.getMessage(), Alert.AlertType.ERROR);

@@ -32,6 +32,7 @@
           <TableColumn fx:id="tableColumnLote" prefWidth="75.0" text="Lote" />
           <TableColumn fx:id="tableColumnProfissional" prefWidth="117.0" text="Profissional" />
             <TableColumn fx:id="tableColumnDataAtendimento" prefWidth="139.0" text="Data Atendimento" />
+            <TableColumn fx:id="tableColumnTurno" prefWidth="105.0" text="Turno" />
             <TableColumn fx:id="tableColumnQtdAtendimento" prefWidth="105.0" text="Qtd Atendimento" />
         </columns>
          <padding>

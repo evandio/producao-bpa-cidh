@@ -20,8 +20,9 @@ public class LoteBpa implements Serializable{
     private Integer loteBpa;
     private Date dataAtendimento;
     private Profissional profissional;
-    private Procedimento procedimento;
     private Integer qtdAtendimento;
+    private Integer turno;
+    //private List<Atendimentos> atendimentos;
 
     public Integer getLoteBpa() {
         return loteBpa;
@@ -46,15 +47,7 @@ public class LoteBpa implements Serializable{
     public void setProfissional(Profissional profissional) {
         this.profissional = profissional;
     }
-
-    public Procedimento getProcedimento() {
-        return procedimento;
-    }
-
-    public void setProcedimento(Procedimento procedimento) {
-        this.procedimento = procedimento;
-    }
-
+    
     public Integer getQtdAtendimento() {
         return qtdAtendimento;
     }
@@ -63,17 +56,29 @@ public class LoteBpa implements Serializable{
         this.qtdAtendimento = qtdAtendimento;
     }
 
+    public Integer getTurno() {
+        return turno;
+    }
+
+    public void setTurno(Integer turno) {
+        this.turno = turno;
+    }
+    
+    
+ 
     public LoteBpa() {
     }
 
-    public LoteBpa(Integer loteBpa, Date dataAtendimento, Profissional profissional, Procedimento procedimento, Integer qtdAtendimento) {
+    public LoteBpa(Integer loteBpa, Date dataAtendimento, Profissional profissional, Integer qtdAtendimento, Integer turno) {
         this.loteBpa = loteBpa;
         this.dataAtendimento = dataAtendimento;
         this.profissional = profissional;
-        this.procedimento = procedimento;
         this.qtdAtendimento = qtdAtendimento;
+        this.turno = turno;
     }
 
+  
+    
     @Override
     public int hashCode() {
         int hash = 5;
@@ -101,9 +106,8 @@ public class LoteBpa implements Serializable{
 
     @Override
     public String toString() {
-        return "LoteBpa{" + "loteBpa=" + loteBpa + ", dataAtendimento=" + dataAtendimento + ", profissional=" + profissional + ", procedimento=" + procedimento + ", qtdAtendimento=" + qtdAtendimento + '}';
+        return "LoteBpa{" + "loteBpa=" + loteBpa + ", dataAtendimento=" + dataAtendimento + ", profissional=" + profissional + ", qtdAtendimento=" + qtdAtendimento + ", turno=" + turno + '}';
     }
-    
-    
-    
+
+   
 }

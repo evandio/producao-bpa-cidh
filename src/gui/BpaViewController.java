@@ -7,17 +7,23 @@ package gui;
 
 import application.Main;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.ResourceBundle;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 import model.entities.LoteBpa;
 import model.entities.Profissional;
+import model.services.LoteBpaService;
 
 /**
  * FXML Controller class
@@ -26,50 +32,116 @@ import model.entities.Profissional;
  */
 public class BpaViewController implements Initializable {
 
+    //Injetar a dependencia do servico sem o acoplamento forte
+    private LoteBpaService service;
+    //private ProfissionalService serviceProfissional;
+
     @FXML
     private TableView<LoteBpa> tableViewLoteBpa;
-    
+
     @FXML
     private TableColumn<LoteBpa, Integer> tableColumnLote;
-    
+
     @FXML
-    private TableColumn<Profissional, String> tableColumnProfissional;
-    
+    private TableColumn<LoteBpa, Profissional> tableColumnProfissional;
+
     @FXML
     private TableColumn<LoteBpa, Date> tableColumnDataAtendimento;
-    
+
     @FXML
     private TableColumn<LoteBpa, Integer> tableColumnQtdAtendimento;
     
     @FXML
-    private Button btNovoBpa;
-    
+    private TableColumn<LoteBpa, Integer> tableColumnTurno;
+
+    private ObservableList<LoteBpa> obsList;
+
+    //Principio solid de inversao de controle 
+    public void setLoteBpaService(LoteBpaService service) {
+        this.service = service;
+    }
+
+    //Responsavel por acessar o servico e ler os dados do Lote BPA e setar na observable list
+    public void updateTableView() {
+
+        //Caso o programador esqueca de injetar o serviço
+        if (service == null) {
+            throw new IllegalStateException("Serviço está nulo!");
+        }
+
+        List<LoteBpa> list = service.findAll();
+        obsList = FXCollections.observableArrayList(list);
+        tableViewLoteBpa.setItems(obsList);
+
+    }
+
     @FXML
-    public void onBtNovoBpaAction(){
+    private Button btNovoBpa;
+
+    @FXML
+    public void onBtNovoBpaAction() {
         System.out.println("onBtNovoBpaAction");
     }
-    
-    
-    
-    
+
     /**
      * Initializes the controller class.
      */
     @Override
     public void initialize(URL uri, ResourceBundle rb) {
-        initializeNodes(); 
-    }    
+        initializeNodes();
+    }
 
     private void initializeNodes() {
 
         //Precisa associar as variáveis aos IDs do FXML na Tela do SceneBuild
-        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
+                        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
+        
         tableColumnDataAtendimento.setCellValueFactory(new PropertyValueFactory<>("dataAtendimento"));
+        //Formatando a celula
+        tableColumnDataAtendimento.setCellFactory(cell -> {
+            return new TableCell<LoteBpa, Date>() {
+                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
+
+                @Override
+                protected void updateItem(Date item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        setText(format.format(item));
+                    } else {
+                        setText("");
+                        setGraphic(null);
+                    }
+                }
+
+            };
+        });
+
         tableColumnProfissional.setCellValueFactory(new PropertyValueFactory<>("profissional"));
+        //Formatando a celula
+        tableColumnProfissional.setCellFactory(cell -> {
+            return new TableCell< LoteBpa, Profissional >() {
+                
+
+                @Override
+                protected void updateItem(Profissional item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (!empty) {
+                        setText(item.getDsc_usuario());
+                    } else {
+                        setText("");
+                        setGraphic(null);
+                    }
+                }
+
+            };
+        });
+
         tableColumnQtdAtendimento.setCellValueFactory(new PropertyValueFactory<>("qtdAtendimento"));
         
+        tableColumnTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
+
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewLoteBpa.prefHeightProperty().bind(stage.heightProperty());
     }
-    
+
 }

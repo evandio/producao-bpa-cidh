@@ -16,5 +16,9 @@ public interface ProfissionalDao {
 
     List<Profissional> localizarTodos();
 
-    List<Profissional> localizarNome(String nome);
+    List<Profissional> localizarProfissionais(String nome);
+    
+    Profissional localizarProfissional(String nome);
+    
+    Profissional localizarProfissional(Integer prontuario);
 }

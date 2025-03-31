@@ -89,7 +89,7 @@ public class DB {
     public static void main(String [] args) {
         
         ProfissionalDao dao = DaoFactory.createProfissionalDao();
-        List<Profissional> listaProf = dao.localizarNome("%antonio%"); 
+        List<Profissional> listaProf = dao.localizarProfissionais("%antonio%"); 
         
         for (Profissional p : listaProf ){
             System.out.print(p.getDsc_usuario());

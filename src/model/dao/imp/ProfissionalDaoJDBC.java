@@ -61,10 +61,10 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
     }
 
     @Override
-    public List<Profissional> localizarNome(String nome) {
+    public List<Profissional> localizarProfissionais(String nome) {
         PreparedStatement st = null;
         ResultSet rs = null;
-        
+
         String sql = "select * "
                 + "from "
                 + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_usuario_especialidade c, seguranca.t_especialidade d "
@@ -81,7 +81,6 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
             st = conn.prepareStatement(sql);
             st.setString(1, nome.toUpperCase());
             rs = st.executeQuery();
-            
 
             List<Profissional> list = new ArrayList<>();
 
@@ -94,7 +93,46 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
             throw new DbException(e.getMessage());
         }
     }
-    
+
+    @Override
+    public Profissional localizarProfissional(String nome) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String sql = "select * "
+                + "from "
+                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_usuario_especialidade c, seguranca.t_especialidade d "
+                + "where "
+                + " a.isn_formacao > 0 "
+                + "and a.flg_situacao = 'S' "
+                + "and a.isn_formacao = b.isn_formacao "
+                + "and a.isn_usuario = c.isn_usuario_especialidade "
+                + "and c.isn_especialidade = d.isn_especialidade "
+                + "and a.dsc_usuario LIKE ? "
+                + "order by a.dsc_usuario ";
+
+        try {
+            st = conn.prepareStatement(sql);
+            st.setString(1, nome.toUpperCase());
+            rs = st.executeQuery();
+
+            Profissional prof = new Profissional();
+
+            while (rs.next()) {
+                prof = instatiateProfissional(rs);
+            }
+
+            return prof;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
+    @Override
+    public Profissional localizarProfissional(Integer prontuario) {
+        System.out.println("Não implementado");
+        return null;
+    }
 
     private Profissional instatiateProfissional(ResultSet rs) throws SQLException {
         Profissional prof = new Profissional();

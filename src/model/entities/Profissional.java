@@ -14,6 +14,8 @@ import java.util.Objects;
  */
 public class Profissional implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+     
     private Integer isn_usuario;
     private String dsc_usuario;
     private Integer ins_formacao;
@@ -99,5 +101,5 @@ public class Profissional implements Serializable {
     public String toString() {
         return "Profissional{" + "isn_usuario=" + isn_usuario + ", dsc_usuario=" + dsc_usuario + ", ins_formacao=" + ins_formacao + ", dsc_formacao=" + dsc_formacao + ", dsc_especialidade=" + dsc_especialidade + '}';
     }
-    
+   
 }
