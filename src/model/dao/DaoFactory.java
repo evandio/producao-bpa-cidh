@@ -5,8 +5,10 @@
  */
 package model.dao;
 
+import db.DB_Bpa;
 import model.dao.imp.ProfissionalDaoJDBC;
-import db.DB;
+import db.DB_Vitae;
+import model.dao.imp.GeradorDeChaveDaoJDBC;
 
 /**
  *
@@ -15,7 +17,11 @@ import db.DB;
 public class DaoFactory {
 
     public static ProfissionalDao createProfissionalDao() {
-        return new ProfissionalDaoJDBC(DB.getConnection());
+        return new ProfissionalDaoJDBC(DB_Vitae.getConnection());
+    }
+
+    public static GeradorDeChaveDao createGeradorDeChaveDao() {
+        return new GeradorDeChaveDaoJDBC(DB_Bpa.getConnection());
     }
 
 }

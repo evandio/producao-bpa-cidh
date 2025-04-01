@@ -12,17 +12,15 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Properties;
 import model.dao.DaoFactory;
-import model.dao.ProfissionalDao;
-import model.entities.Profissional;
+import model.dao.GeradorDeChaveDao;
 
 /**
  *
  * @author evandio.pereira
  */
-public class DB {
+public class DB_Bpa {
 
     private static Connection conn = null;
 
@@ -36,7 +34,7 @@ public class DB {
                 String pass = props.getProperty("jdbc.password");
 
                 conn = DriverManager.getConnection(url, user, pass);
-                 
+
             } catch (SQLException e) {
                 throw new DbException(e.getMessage());
             }
@@ -44,20 +42,8 @@ public class DB {
         return conn;
     }
 
-    private static void closeConnection() {
-        if (conn != null) {
-
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
-            }
-
-        }
-    }
-
     private static Properties loadProperties() {
-        try (FileInputStream fs = new FileInputStream("databaseVitaePostgres.properties")) {
+        try (FileInputStream fs = new FileInputStream("databaseBpaProducaoPostgres.properties")) {
             Properties props = new Properties();
             props.load(fs);
             return props;
@@ -86,16 +72,20 @@ public class DB {
         }
     }
 
-    public static void main(String [] args) {
-        
-        ProfissionalDao dao = DaoFactory.createProfissionalDao();
-        List<Profissional> listaProf = dao.localizarProfissionais("%antonio%"); 
-        
-        for (Profissional p : listaProf ){
-            System.out.print(p.getDsc_usuario());
-            System.out.print(" - " + p.getDsc_formacao());
-            System.out.print(" - " + p.getDsc_especialidade());
-            System.out.println("");
+    public static void closeConnection() {
+        if (conn != null) {
+
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+
         }
+    }
+    
+    public static void main(String[] args){
+       
+        
     }
 }
