@@ -13,7 +13,11 @@ import model.entities.Cbo;
  * @author evandio.pereira
  */
 public interface CboDao {
-    
+
     List<Cbo> listaCbosGil();
-    
+
+    void gravarCbo(Cbo cbo);
+
+    void gravarCbo(List<Cbo> listaCbos);
+
 }

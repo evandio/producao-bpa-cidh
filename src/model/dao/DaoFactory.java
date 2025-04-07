@@ -6,9 +6,12 @@
 package model.dao;
 
 import db.DB_Bpa;
+import db.DB_Gil;
 import model.dao.imp.ProfissionalDaoJDBC;
 import db.DB_Vitae;
+import model.dao.imp.CboDaoJDBC;
 import model.dao.imp.GeradorDeChaveDaoJDBC;
+import model.entities.Cbo;
 
 /**
  *
@@ -23,5 +26,13 @@ public class DaoFactory {
     public static GeradorDeChaveDao createGeradorDeChaveDao() {
         return new GeradorDeChaveDaoJDBC(DB_Bpa.getConnection());
     }
-
-}
+    
+    public static CboDao createCboDaoGil(){
+        return new CboDaoJDBC(DB_Gil.getConnection());
+    }
+    
+    public static CboDao createCboDaoBpa(){
+        return new CboDaoJDBC(DB_Bpa.getConnection());
+    }
+    
+  }

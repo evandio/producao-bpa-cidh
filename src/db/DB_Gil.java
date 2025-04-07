@@ -13,7 +13,12 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.List;
 import java.util.Properties;
+import model.dao.CboDao;
+import model.dao.DaoFactory;
+import model.dao.GeradorDeChaveDao;
+import model.entities.Cbo;
 
 /**
  *
@@ -89,19 +94,19 @@ public class DB_Gil {
     }
 
     public static void main(String[] args) {
-        Connection conn = DB_Bpa.getConnection();
+        
+        //Chama a interface que implementa o Gerador de Chave
+        //GeradorDeChaveDao daoChave = DaoFactory.createGeradorDeChaveDao();
+        //Chama o metodo pelo dao
+        //long chave = daoChave.getProximoCodigo("tb_lote");
+        //System.out.println("Sequencia: " + chave);
+         
 
-        try {
-            String sql = "select * from cbos";
-            PreparedStatement st = conn.prepareStatement(sql);
-            ResultSet rs = st.executeQuery();
-
-            while (rs.next()) {
-                System.out.println(rs.getString("ds_cbo_reduzida"));
-            }
-
-        } catch (SQLException e) {
-            throw new DbException(e.getMessage());
-        }
+        CboDao daoGil = DaoFactory.createCboDaoGil();
+        List<Cbo> listaCbo = daoGil.listaCbosGil();
+        System.out.println("");
+        
+        CboDao daoBpa = DaoFactory.createCboDaoBpa();
+        daoBpa.gravarCbo(listaCbo);
     }
 }

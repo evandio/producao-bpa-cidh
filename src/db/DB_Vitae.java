@@ -12,11 +12,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Properties;
-import model.dao.DaoFactory;
-import model.dao.ProfissionalDao;
-import model.entities.Profissional;
 
 /**
  *
@@ -85,6 +81,4 @@ public class DB_Vitae {
             }
         }
     }
-
-  
 }
