@@ -14,14 +14,12 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Properties;
-import model.dao.DaoFactory;
-import model.dao.GeradorDeChaveDao;
 
 /**
  *
  * @author evandio.pereira
  */
-public class DB_Bpa {
+public class DB_Gil {
 
     private static Connection conn = null;
 
@@ -30,21 +28,38 @@ public class DB_Bpa {
         if (conn == null) {
             try {
                 Properties props = loadProperties();
+                String drv = props.getProperty("jdbc.driver");
                 String url = props.getProperty("jdbc.url");
-                String user = props.getProperty("jdbc.username");
-                String pass = props.getProperty("jdbc.password");
+                String user = props.getProperty("jdbc.user");
+                String pass = props.getProperty("jdbc.pass");
+
+                Class.forName(drv);
 
                 conn = DriverManager.getConnection(url, user, pass);
 
             } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            } catch (ClassNotFoundException e) {
                 throw new DbException(e.getMessage());
             }
         }
         return conn;
     }
 
+    private static void closeConnection() {
+        if (conn != null) {
+
+            try {
+                conn.close();
+            } catch (SQLException e) {
+                throw new DbException(e.getMessage());
+            }
+
+        }
+    }
+
     private static Properties loadProperties() {
-        try (FileInputStream fs = new FileInputStream("databaseBpaProducaoPostgres.properties")) {
+        try (FileInputStream fs = new FileInputStream("databaseGilNovo.properties")) {
             Properties props = new Properties();
             props.load(fs);
             return props;
@@ -73,27 +88,20 @@ public class DB_Bpa {
         }
     }
 
-    public static void closeConnection() {
-        if (conn != null) {
+    public static void main(String[] args) {
+        Connection conn = DB_Bpa.getConnection();
 
-            try {
-                conn.close();
-            } catch (SQLException e) {
-                throw new DbException(e.getMessage());
+        try {
+            String sql = "select * from cbos";
+            PreparedStatement st = conn.prepareStatement(sql);
+            ResultSet rs = st.executeQuery();
+
+            while (rs.next()) {
+                System.out.println(rs.getString("ds_cbo_reduzida"));
             }
 
-        }
-    }
-    
-    public static void main(String[] args){
-       
-        Connection conn = DB_Bpa.getConnection();
-        
-        try{
-            
-            PreparedStatement st = 
-            
-            
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
         }
     }
 }
