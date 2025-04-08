@@ -16,37 +16,37 @@ public class Procedimento implements Serializable{
     
     private static final long serialVersionUID = 1L;
     
-    private Integer lote;
-    private String descricao;
-
-    public Integer getLote() {
-        return lote;
-    }
-
-    public void setLote(Integer lote) {
-        this.lote = lote;
-    }
-
-    public String getDescricao() {
-        return descricao;
-    }
-
-    public void setDescricao(String descricao) {
-        this.descricao = descricao;
-    }
-
-    public Procedimento(Integer lote, String descricao) {
-        this.lote = lote;
-        this.descricao = descricao;
-    }
+   private String isnCodProcedimento;
+   private String dscProcedimento;
 
     public Procedimento() {
     }
 
+    public Procedimento(String isnCodProcedimento, String dscProcedimento) {
+        this.isnCodProcedimento = isnCodProcedimento;
+        this.dscProcedimento = dscProcedimento;
+    }
+
+    public String getIsnCodProcedimento() {
+        return isnCodProcedimento;
+    }
+
+    public void setIsnCodProcedimento(String isnCodProcedimento) {
+        this.isnCodProcedimento = isnCodProcedimento;
+    }
+
+    public String getDscProcedimento() {
+        return dscProcedimento;
+    }
+
+    public void setDscProcedimento(String dscProcedimento) {
+        this.dscProcedimento = dscProcedimento;
+    }
+
     @Override
     public int hashCode() {
-        int hash = 7;
-        hash = 37 * hash + Objects.hashCode(this.lote);
+        int hash = 5;
+        hash = 83 * hash + Objects.hashCode(this.isnCodProcedimento);
         return hash;
     }
 
@@ -62,7 +62,7 @@ public class Procedimento implements Serializable{
             return false;
         }
         final Procedimento other = (Procedimento) obj;
-        if (!Objects.equals(this.lote, other.lote)) {
+        if (!Objects.equals(this.isnCodProcedimento, other.isnCodProcedimento)) {
             return false;
         }
         return true;
@@ -70,7 +70,8 @@ public class Procedimento implements Serializable{
 
     @Override
     public String toString() {
-        return "Procedimento{" + "lote=" + lote + ", descricao=" + descricao + '}';
+        return "Procedimento{" + "isnCodProcedimento=" + isnCodProcedimento + ", dscProcedimento=" + dscProcedimento + '}';
     }
-
+   
+    
 }

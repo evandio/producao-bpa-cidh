@@ -34,8 +34,15 @@ public class BpaViewController implements Initializable {
 
     //Injetar a dependencia do servico sem o acoplamento forte
     private LoteBpaService service;
-    //private ProfissionalService serviceProfissional;
 
+    private ObservableList<LoteBpa> obsList;
+
+    //Principio solid de inversao de controle 
+    public void setLoteBpaService(LoteBpaService service) {
+        this.service = service;
+    }
+
+    //private ProfissionalService serviceProfissional;
     @FXML
     private TableView<LoteBpa> tableViewLoteBpa;
 
@@ -50,16 +57,9 @@ public class BpaViewController implements Initializable {
 
     @FXML
     private TableColumn<LoteBpa, Integer> tableColumnQtdAtendimento;
-    
+
     @FXML
     private TableColumn<LoteBpa, Integer> tableColumnTurno;
-
-    private ObservableList<LoteBpa> obsList;
-
-    //Principio solid de inversao de controle 
-    public void setLoteBpaService(LoteBpaService service) {
-        this.service = service;
-    }
 
     //Responsavel por acessar o servico e ler os dados do Lote BPA e setar na observable list
     public void updateTableView() {
@@ -69,8 +69,8 @@ public class BpaViewController implements Initializable {
             throw new IllegalStateException("Serviço está nulo!");
         }
 
-        List<LoteBpa> list = service.findAll();
-        obsList = FXCollections.observableArrayList(list);
+        List<LoteBpa> lista = service.localizarTodos();
+        obsList = FXCollections.observableArrayList(lista);
         tableViewLoteBpa.setItems(obsList);
 
     }
@@ -94,8 +94,8 @@ public class BpaViewController implements Initializable {
     private void initializeNodes() {
 
         //Precisa associar as variáveis aos IDs do FXML na Tela do SceneBuild
-                        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
-        
+        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
+
         tableColumnDataAtendimento.setCellValueFactory(new PropertyValueFactory<>("dataAtendimento"));
         //Formatando a celula
         tableColumnDataAtendimento.setCellFactory(cell -> {
@@ -119,14 +119,13 @@ public class BpaViewController implements Initializable {
         tableColumnProfissional.setCellValueFactory(new PropertyValueFactory<>("profissional"));
         //Formatando a celula
         tableColumnProfissional.setCellFactory(cell -> {
-            return new TableCell< LoteBpa, Profissional >() {
-                
+            return new TableCell< LoteBpa, Profissional>() {
 
                 @Override
                 protected void updateItem(Profissional item, boolean empty) {
                     super.updateItem(item, empty);
                     if (!empty) {
-                        setText(item.getDsc_usuario());
+                        setText(item.getDscUsuario());
                     } else {
                         setText("");
                         setGraphic(null);
@@ -137,7 +136,7 @@ public class BpaViewController implements Initializable {
         });
 
         tableColumnQtdAtendimento.setCellValueFactory(new PropertyValueFactory<>("qtdAtendimento"));
-        
+
         tableColumnTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
 
         Stage stage = (Stage) Main.getMainScene().getWindow();

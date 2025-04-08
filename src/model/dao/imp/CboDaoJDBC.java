@@ -52,14 +52,6 @@ public class CboDaoJDBC implements CboDao {
         return lista;
     }
 
-    private Cbo instantiateCboGil(ResultSet rs) throws SQLException {
-        Cbo cbo = new Cbo();
-        cbo.setIsn_cbo(rs.getString("cod_cbos"));
-        cbo.setDsc_cbo(rs.getString("ds_cbo_reduzida"));
-
-        return cbo;
-    }
-
     @Override
     public void gravarCbo(Cbo cbo) {
         PreparedStatement st = null;
@@ -106,5 +98,13 @@ public class CboDaoJDBC implements CboDao {
             }
 
         }
+    }
+
+    private Cbo instantiateCboGil(ResultSet rs) throws SQLException {
+        Cbo cbo = new Cbo();
+        cbo.setIsn_cbo(rs.getString("cod_cbos"));
+        cbo.setDsc_cbo(rs.getString("ds_cbo_reduzida"));
+
+        return cbo;
     }
 }

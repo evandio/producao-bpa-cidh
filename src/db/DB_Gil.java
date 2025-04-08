@@ -9,16 +9,13 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import java.util.Properties;
-import model.dao.CboDao;
-import model.dao.DaoFactory;
-import model.dao.GeradorDeChaveDao;
-import model.entities.Cbo;
+import model.entities.Profissional;
+import model.services.ProfissionalService;
 
 /**
  *
@@ -94,19 +91,23 @@ public class DB_Gil {
     }
 
     public static void main(String[] args) {
-        
+
         //Chama a interface que implementa o Gerador de Chave
         //GeradorDeChaveDao daoChave = DaoFactory.createGeradorDeChaveDao();
         //Chama o metodo pelo dao
         //long chave = daoChave.getProximoCodigo("tb_lote");
         //System.out.println("Sequencia: " + chave);
-         
-
-        CboDao daoGil = DaoFactory.createCboDaoGil();
-        List<Cbo> listaCbo = daoGil.listaCbosGil();
-        System.out.println("");
         
-        CboDao daoBpa = DaoFactory.createCboDaoBpa();
-        daoBpa.gravarCbo(listaCbo);
+        ProfissionalService service = new ProfissionalService();
+        List<Profissional> lista =  service.localizarTodos();
+        
+        for (Profissional p : lista){
+            System.out.print(p.getDscUsuario() + " - ");
+            System.out.print(p.getDscFormacao()+ " - ");
+            System.out.print(p.getNumConselho()+ " - ");
+            System.out.print(p.getSglConselho()+ " - ");
+            System.out.println("");
+        }
+
     }
 }

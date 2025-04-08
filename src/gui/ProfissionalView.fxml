@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="678.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfissionalViewController">
+   <children>
+      <Label text="Atualização CBO profissional">
+         <padding>
+            <Insets left="10.0" top="10.0" />
+         </padding>
+         <font>
+            <Font name="System Bold" size="14.0" />
+         </font>
+      </Label>
+      <ToolBar prefHeight="40.0" prefWidth="200.0">
+        <items>
+          <Button fx:id="btAssociaCbo" mnemonicParsing="false" onAction="#onBtAssociaCboAction" text="Associar CBO" />
+        </items>
+      </ToolBar>
+      <TableView fx:id="tableViewProfissional" prefHeight="200.0" prefWidth="200.0">
+        <columns>
+          <TableColumn fx:id="tableColumnNomeProf" prefWidth="204.0" text="Nome profissional" />
+          <TableColumn fx:id="tableColumnFormacao" minWidth="4.0" prefWidth="272.0" text="Formação" />
+            <TableColumn fx:id="tableColumnNumConselho" prefWidth="130.0" text="Número Conselho" />
+            <TableColumn fx:id="tableColumnSigla" prefWidth="70.0" text="Sigla" />
+        </columns>
+      </TableView>
+   </children>
+</VBox>

@@ -15,51 +15,60 @@ import java.util.Objects;
 public class Profissional implements Serializable {
 
     private static final long serialVersionUID = 1L;
-     
-    private Integer isn_usuario;
-    private String dsc_usuario;
-    private Integer ins_formacao;
-    private String dsc_formacao;
-    private String dsc_especialidade;
 
-    public Integer getIsn_usuario() {
-        return isn_usuario;
+    private Integer isnUsuario;
+    private String dscUsuario;
+    private Integer insFormacao;
+    private String dscFormacao;
+    private String numConselho;
+    private String sglConselho;
+
+    public Integer getIsnUsuario() {
+        return isnUsuario;
     }
 
-    public void setIsn_usuario(Integer isn_usuario) {
-        this.isn_usuario = isn_usuario;
+    public void setIsnUsuario(Integer isn_usuario) {
+        this.isnUsuario = isn_usuario;
     }
 
-    public String getDsc_usuario() {
-        return dsc_usuario;
+    public String getDscUsuario() {
+        return dscUsuario;
     }
 
-    public void setDsc_usuario(String dsc_usuario) {
-        this.dsc_usuario = dsc_usuario;
+    public void setDscUsuario(String dsc_usuario) {
+        this.dscUsuario = dsc_usuario;
     }
 
-    public Integer getIns_formacao() {
-        return ins_formacao;
+    public Integer getInsFormacao() {
+        return insFormacao;
     }
 
-    public void setIns_formacao(Integer ins_formacao) {
-        this.ins_formacao = ins_formacao;
+    public void setInsFormacao(Integer ins_formacao) {
+        this.insFormacao = ins_formacao;
     }
 
-    public String getDsc_formacao() {
-        return dsc_formacao;
+    public String getDscFormacao() {
+        return dscFormacao;
     }
 
-    public void setDsc_formacao(String dsc_formacao) {
-        this.dsc_formacao = dsc_formacao;
+    public void setDscFormacao(String dsc_formacao) {
+        this.dscFormacao = dsc_formacao;
+    }
+    
+    public String getNumConselho() {
+        return numConselho;
     }
 
-    public String getDsc_especialidade() {
-        return dsc_especialidade;
+    public void setNumConselho(String numConselho) {
+        this.numConselho = numConselho;
     }
 
-    public void setDsc_especialidade(String dsc_especialidade) {
-        this.dsc_especialidade = dsc_especialidade;
+    public String getSglConselho() {
+        return sglConselho;
+    }
+
+    public void setSglConselho(String sglConselho) {
+        this.sglConselho = sglConselho;
     }
 
     @Override
@@ -80,26 +89,27 @@ public class Profissional implements Serializable {
             return false;
         }
         final Profissional other = (Profissional) obj;
-        if (!Objects.equals(this.isn_usuario, other.isn_usuario)) {
+        if (!Objects.equals(this.isnUsuario, other.isnUsuario)) {
             return false;
         }
         return true;
     }
 
-    public Profissional(Integer isn_usuario, String dsc_usuario, Integer ins_formacao, String dsc_formacao, String dsc_especialidade) {
-        this.isn_usuario = isn_usuario;
-        this.dsc_usuario = dsc_usuario;
-        this.ins_formacao = ins_formacao;
-        this.dsc_formacao = dsc_formacao;
-        this.dsc_especialidade = dsc_especialidade;
+    public Profissional() {
     }
 
-    public Profissional() {
+    public Profissional(Integer isnUsuario, String dscUsuario, Integer insFormacao, String dscFormacao, String numConselho, String sglConselho) {
+        this.isnUsuario = isnUsuario;
+        this.dscUsuario = dscUsuario;
+        this.insFormacao = insFormacao;
+        this.dscFormacao = dscFormacao;
+        this.numConselho = numConselho;
+        this.sglConselho = sglConselho;
     }
 
     @Override
     public String toString() {
-        return "Profissional{" + "isn_usuario=" + isn_usuario + ", dsc_usuario=" + dsc_usuario + ", ins_formacao=" + ins_formacao + ", dsc_formacao=" + dsc_formacao + ", dsc_especialidade=" + dsc_especialidade + '}';
+        return "Profissional{" + "isnUsuario=" + isnUsuario + ", dscUsuario=" + dscUsuario + ", insFormacao=" + insFormacao + ", dscFormacao=" + dscFormacao + ", numConselho=" + numConselho + ", sglConselho=" + sglConselho + '}';
     }
-   
+
 }

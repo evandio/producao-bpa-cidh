@@ -33,15 +33,14 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         ResultSet rs = null;
 
         String sql = "select * "
-                + "from "
-                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_usuario_especialidade c, seguranca.t_especialidade d "
-                + "where "
+                + " from "
+                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_conselho c  "
+                + " where "
                 + " a.isn_formacao > 0 "
-                + "and a.flg_situacao = 'S' "
-                + "and a.isn_formacao = b.isn_formacao "
-                + "and a.isn_usuario = c.isn_usuario_especialidade "
-                + "and c.isn_especialidade = d.isn_especialidade "
-                + "order by a.dsc_usuario ";
+                + " and a.flg_situacao = 'S' "
+                + " and a.isn_formacao = b.isn_formacao "
+                + " and a.isn_conselho = c.isn_conselho "
+                + " order by a.dsc_usuario ";
 
         try {
             st = conn.prepareStatement(sql);
@@ -67,13 +66,12 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
 
         String sql = "select * "
                 + "from "
-                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_usuario_especialidade c, seguranca.t_especialidade d "
+                + " seguranca.t_usuario a, seguranca.t_formacao b,  seguranca.t_conselho c "
                 + "where "
                 + " a.isn_formacao > 0 "
                 + "and a.flg_situacao = 'S' "
                 + "and a.isn_formacao = b.isn_formacao "
-                + "and a.isn_usuario = c.isn_usuario_especialidade "
-                + "and c.isn_especialidade = d.isn_especialidade "
+                + "and a.isn_conselho = c.isn_conselho "
                 + "and a.dsc_usuario LIKE ? "
                 + "order by a.dsc_usuario ";
 
@@ -101,13 +99,12 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
 
         String sql = "select * "
                 + "from "
-                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_usuario_especialidade c, seguranca.t_especialidade d "
+                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_conselho c "
                 + "where "
                 + " a.isn_formacao > 0 "
                 + "and a.flg_situacao = 'S' "
                 + "and a.isn_formacao = b.isn_formacao "
-                + "and a.isn_usuario = c.isn_usuario_especialidade "
-                + "and c.isn_especialidade = d.isn_especialidade "
+                + "and a.ins_conselho = c.isn_conselho "
                 + "and a.dsc_usuario LIKE ? "
                 + "order by a.dsc_usuario ";
 
@@ -128,19 +125,14 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         }
     }
 
-    @Override
-    public Profissional localizarProfissional(Integer prontuario) {
-        System.out.println("Não implementado");
-        return null;
-    }
-
     private Profissional instatiateProfissional(ResultSet rs) throws SQLException {
         Profissional prof = new Profissional();
-        prof.setIsn_usuario(rs.getInt("isn_usuario"));
-        prof.setDsc_usuario(rs.getString("dsc_usuario"));
-        prof.setIns_formacao(rs.getInt("isn_formacao"));
-        prof.setDsc_formacao(rs.getString("dsc_formacao"));
-        prof.setDsc_especialidade(rs.getString("dsc_especialidade"));
+        prof.setIsnUsuario(rs.getInt("isn_usuario"));
+        prof.setDscUsuario(rs.getString("dsc_usuario"));
+        prof.setInsFormacao(rs.getInt("isn_formacao"));
+        prof.setDscFormacao(rs.getString("dsc_formacao"));
+        prof.setNumConselho(rs.getString("num_conselho"));
+        prof.setSglConselho(rs.getString("sgl_conselho"));
 
         return prof;
     }

@@ -15,24 +15,18 @@ import model.entities.Profissional;
  * @author evandio.pereira
  */
 public class ProfissionalService {
-    
-    private ProfissionalDao dao = DaoFactory.createProfissionalDao();    
-    
+
+    private ProfissionalDao dao = DaoFactory.createProfissionalDao();
+
     public List<Profissional> localizarTodos() {
         return dao.localizarTodos();
     }
-    
+
     public List<Profissional> localizarProfissionais(String nome) {
         return dao.localizarProfissionais(nome);
     }
-    
-    public Profissional localizarProfissional(String nome){
+
+    public Profissional localizarProfissional(String nome) {
         return dao.localizarProfissional(nome);
     }
-    
-    public Profissional localizarProfissional(Integer prontuario){
-        return dao.localizarProfissional(prontuario);
-    }
-    
-    
 }

@@ -6,17 +6,17 @@
 package model.dao;
 
 import java.util.List;
-import model.entities.Profissional;
+import model.entities.Procedimento;
 
 /**
  *
  * @author evandio.pereira
  */
-public interface ProfissionalDao {
-
-    List<Profissional> localizarTodos();
-
-    List<Profissional> localizarProfissionais(String nome);
+public interface ProcedimentoDao {
     
-    Profissional localizarProfissional(String nome);
+    List<Procedimento> listaProcedimentoGil();
+    
+    void gravarProcedimento(Procedimento proced);
+    
+    void gravarProcedimento(List<Procedimento> listaProced);
 }
