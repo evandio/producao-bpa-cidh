@@ -10,9 +10,10 @@ import db.DB_Gil;
 import model.dao.imp.ProfissionalDaoJDBC;
 import db.DB_Vitae;
 import model.dao.imp.CboDaoJDBC;
+import model.dao.imp.CboProfissionalDaoJDBC;
 import model.dao.imp.GeradorDeChaveDaoJDBC;
 import model.dao.imp.ProcedimentoJDBC;
-import model.entities.Cbo;
+
 
 /**
  *
@@ -42,6 +43,10 @@ public class DaoFactory {
 
     public static ProcedimentoDao createProcedimentoBpa() {
         return new ProcedimentoJDBC(DB_Bpa.getConnection());
+    }
+
+    public static CboProfissionalDao createCboProfissional() {
+        return new CboProfissionalDaoJDBC(DB_Bpa.getConnection());
     }
 
 }

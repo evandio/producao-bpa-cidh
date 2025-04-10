@@ -5,8 +5,6 @@
  */
 package model.dao;
 
-import java.util.List;
-import model.entities.Cbo;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
 
@@ -14,16 +12,8 @@ import model.entities.Profissional;
  *
  * @author evandio.pereira
  */
-public interface CboDao {
+public interface CboProfissionalDao {
 
-    List<Cbo> listaCbosGil();
-
-    void gravarCbo(Cbo cbo);
-
-    void gravarCbo(List<Cbo> listaCbos);
-
-    List<Cbo> listaTodosCbosBpa();
-
+    CboProfissional buscarCboProfissional(Profissional profissional);
     
-
 }

@@ -22,6 +22,7 @@ public class Profissional implements Serializable {
     private String dscFormacao;
     private String numConselho;
     private String sglConselho;
+    private CboProfissional cboProf;
 
     public Integer getIsnUsuario() {
         return isnUsuario;
@@ -54,7 +55,7 @@ public class Profissional implements Serializable {
     public void setDscFormacao(String dsc_formacao) {
         this.dscFormacao = dsc_formacao;
     }
-    
+
     public String getNumConselho() {
         return numConselho;
     }
@@ -98,18 +99,29 @@ public class Profissional implements Serializable {
     public Profissional() {
     }
 
-    public Profissional(Integer isnUsuario, String dscUsuario, Integer insFormacao, String dscFormacao, String numConselho, String sglConselho) {
+    public CboProfissional getCboProf() {
+        return cboProf;
+    }
+
+    public void setCboProf(CboProfissional cboProf) {
+        this.cboProf = cboProf;
+    }
+
+    public Profissional(Integer isnUsuario, String dscUsuario, Integer insFormacao, String dscFormacao, String numConselho, String sglConselho, CboProfissional cboProf) {
         this.isnUsuario = isnUsuario;
         this.dscUsuario = dscUsuario;
         this.insFormacao = insFormacao;
         this.dscFormacao = dscFormacao;
         this.numConselho = numConselho;
         this.sglConselho = sglConselho;
+        this.cboProf = cboProf;
     }
 
     @Override
     public String toString() {
-        return "Profissional{" + "isnUsuario=" + isnUsuario + ", dscUsuario=" + dscUsuario + ", insFormacao=" + insFormacao + ", dscFormacao=" + dscFormacao + ", numConselho=" + numConselho + ", sglConselho=" + sglConselho + '}';
+        return "Profissional{" + "isnUsuario=" + isnUsuario + ", dscUsuario=" + dscUsuario + ", insFormacao=" + insFormacao + ", dscFormacao=" + dscFormacao + ", numConselho=" + numConselho + ", sglConselho=" + sglConselho + ", cboProf=" + cboProf + '}';
     }
+
+    
 
 }

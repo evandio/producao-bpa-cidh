@@ -16,6 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 import model.dao.CboDao;
 import model.entities.Cbo;
+import model.entities.CboProfissional;
+import model.entities.Profissional;
 
 /**
  *
@@ -100,6 +102,39 @@ public class CboDaoJDBC implements CboDao {
         }
     }
 
+    @Override
+    public List<Cbo> listaTodosCbosBpa() {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM bpa_cidh.tb_cbos ";
+        List<Cbo> list = new ArrayList<>();
+
+        try {
+            st = conn.prepareStatement(sql);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                list.add(instantiateCboBpa(rs));
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        } finally {
+            DB_Bpa.closeStatement(st);
+        }
+
+        return list;
+    }
+
+    private Cbo instantiateCboBpa(ResultSet rs) throws SQLException {
+        Cbo cbo = new Cbo();
+        cbo.setIsn_cbo(rs.getString("isn_cbo"));
+        cbo.setDsc_cbo(rs.getString("dsc_cbos"));
+
+        return cbo;
+    }
+
     private Cbo instantiateCboGil(ResultSet rs) throws SQLException {
         Cbo cbo = new Cbo();
         cbo.setIsn_cbo(rs.getString("cod_cbos"));
@@ -107,4 +142,5 @@ public class CboDaoJDBC implements CboDao {
 
         return cbo;
     }
+
 }

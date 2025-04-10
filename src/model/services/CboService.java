@@ -3,27 +3,22 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.dao;
+package model.services;
 
 import java.util.List;
+import model.dao.CboDao;
+import model.dao.DaoFactory;
 import model.entities.Cbo;
-import model.entities.CboProfissional;
-import model.entities.Profissional;
 
 /**
  *
  * @author evandio.pereira
  */
-public interface CboDao {
+public class CboService {
 
-    List<Cbo> listaCbosGil();
+    private CboDao dao = DaoFactory.createCboDaoBpa();
 
-    void gravarCbo(Cbo cbo);
-
-    void gravarCbo(List<Cbo> listaCbos);
-
-    List<Cbo> listaTodosCbosBpa();
-
-    
-
+    public List<Cbo> todosCbos() {
+        return dao.listaTodosCbosBpa();
+    }
 }

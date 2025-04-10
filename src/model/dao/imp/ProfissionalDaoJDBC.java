@@ -13,7 +13,10 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.dao.ProfissionalDao;
+import model.entities.Cbo;
+import model.entities.CboProfissional;
 import model.entities.Profissional;
+import model.services.CboProfissionalService;
 
 /**
  *
@@ -104,7 +107,7 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
                 + " a.isn_formacao > 0 "
                 + "and a.flg_situacao = 'S' "
                 + "and a.isn_formacao = b.isn_formacao "
-                + "and a.ins_conselho = c.isn_conselho "
+                + "and a.isn_conselho = c.isn_conselho "
                 + "and a.dsc_usuario LIKE ? "
                 + "order by a.dsc_usuario ";
 
@@ -133,7 +136,16 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         prof.setDscFormacao(rs.getString("dsc_formacao"));
         prof.setNumConselho(rs.getString("num_conselho"));
         prof.setSglConselho(rs.getString("sgl_conselho"));
+        
 
+        //Tenrar relacionar o Profissional com o CBO
+        //--->Buscar o Cbo
+        CboProfissionalService service = new CboProfissionalService();
+        CboProfissional objCbo = service.localizarCboProfissional(prof);
+        
+        prof.setCboProf(objCbo);
+        
+        
         return prof;
     }
 

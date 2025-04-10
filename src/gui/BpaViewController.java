@@ -6,6 +6,7 @@
 package gui;
 
 import application.Main;
+import gui.util.Utils;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -16,7 +17,6 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
@@ -95,46 +95,16 @@ public class BpaViewController implements Initializable {
 
         //Precisa associar as variáveis aos IDs do FXML na Tela do SceneBuild
         tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
+        
 
         tableColumnDataAtendimento.setCellValueFactory(new PropertyValueFactory<>("dataAtendimento"));
-        //Formatando a celula
-        tableColumnDataAtendimento.setCellFactory(cell -> {
-            return new TableCell<LoteBpa, Date>() {
-                SimpleDateFormat format = new SimpleDateFormat("dd/MM/yyyy");
-
-                @Override
-                protected void updateItem(Date item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (!empty) {
-                        setText(format.format(item));
-                    } else {
-                        setText("");
-                        setGraphic(null);
-                    }
-                }
-
-            };
-        });
-
+        //Formatação da coluna
+        Utils.formatTableColumnDate(tableColumnDataAtendimento, "dd/MM/yyyy");
+        
         tableColumnProfissional.setCellValueFactory(new PropertyValueFactory<>("profissional"));
-        //Formatando a celula
-        tableColumnProfissional.setCellFactory(cell -> {
-            return new TableCell< LoteBpa, Profissional>() {
-
-                @Override
-                protected void updateItem(Profissional item, boolean empty) {
-                    super.updateItem(item, empty);
-                    if (!empty) {
-                        setText(item.getDscUsuario());
-                    } else {
-                        setText("");
-                        setGraphic(null);
-                    }
-                }
-
-            };
-        });
-
+        //Formatação da coluna
+        Utils.formatTableColumProfissional(tableColumnProfissional, 1);
+        
         tableColumnQtdAtendimento.setCellValueFactory(new PropertyValueFactory<>("qtdAtendimento"));
 
         tableColumnTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));

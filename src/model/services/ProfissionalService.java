@@ -6,8 +6,11 @@
 package model.services;
 
 import java.util.List;
+import model.dao.CboDao;
 import model.dao.DaoFactory;
 import model.dao.ProfissionalDao;
+import model.entities.Cbo;
+import model.entities.CboProfissional;
 import model.entities.Profissional;
 
 /**
@@ -17,6 +20,7 @@ import model.entities.Profissional;
 public class ProfissionalService {
 
     private ProfissionalDao dao = DaoFactory.createProfissionalDao();
+    private CboDao daoCbo = DaoFactory.createCboDaoBpa();
 
     public List<Profissional> localizarTodos() {
         return dao.localizarTodos();
@@ -28,5 +32,9 @@ public class ProfissionalService {
 
     public Profissional localizarProfissional(String nome) {
         return dao.localizarProfissional(nome);
+    }
+
+    public List<Cbo> todosCbosBpa() {
+        return daoCbo.listaTodosCbosBpa();
     }
 }

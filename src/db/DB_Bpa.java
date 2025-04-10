@@ -13,12 +13,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.List;
 import java.util.Properties;
-import model.dao.CboDao;
-import model.dao.DaoFactory;
-import model.dao.imp.CboDaoJDBC;
-import model.entities.Cbo;
 
 /**
  *

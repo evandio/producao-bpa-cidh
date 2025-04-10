@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package main.gui.util;
+package gui.util;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDate;
@@ -17,6 +17,8 @@ import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import model.entities.CboProfissional;
+import model.entities.Profissional;
 
 /**
  *
@@ -70,6 +72,67 @@ public class Utils {
                         setText(String.format("%." + decimalPaces + "f", item));
                     }
 
+                }
+            };
+            return cell;
+        });
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param tableColumn
+     * @param valor (1=Nome Profissional; 2=Formação)
+     */
+    public static <T> void formatTableColumProfissional(TableColumn<T, Profissional> tableColumn, int valor) {
+        tableColumn.setCellFactory(column -> {
+            TableCell<T, Profissional> cell = new TableCell<T, Profissional>() {
+
+                @Override
+                protected void updateItem(Profissional item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty) {
+                        setText("");
+                        setGraphic(null);
+                    } else {
+                        //Criar uma forma de coletar os valores de cada item da entidade passada
+                        switch (valor) {
+                            case 1:
+                                setText(item.getDscUsuario());
+                                break;
+                            case 2:
+                                setText(item.getDscFormacao());
+                                break;
+                            default:
+                                setText("Precisa escolher uma opção");
+                        }
+                    }
+                }
+            };
+            return cell;
+        });
+    }
+
+    /**
+     *
+     * @param <T>
+     * @param tableColumn
+     * @param valor (1=Nome Profissional; 2=Formação)
+     */
+    public static <T> void formatTableColumCboProf(TableColumn<T, CboProfissional> tableColumn) {
+        tableColumn.setCellFactory(column -> {
+            TableCell<T, CboProfissional> cell = new TableCell<T, CboProfissional>() {
+
+                @Override
+                protected void updateItem(CboProfissional item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || item.getCbo() == null) {
+                        setText("");
+                        setGraphic(null);
+                    } else {
+                        //Criar uma forma de coletar os valores de cada item da entidade passada
+                        setText(item.getCbo().getDsc_cbo());
+                    }
                 }
             };
             return cell;

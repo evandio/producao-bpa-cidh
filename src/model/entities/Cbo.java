@@ -66,7 +66,7 @@ public class Cbo {
 
     @Override
     public String toString() {
-        return "Cbo{" + "isn_cbo=" + isn_cbo + ", dsc_cbo=" + dsc_cbo + '}';
+        return getDsc_cbo() ;
     }
     
     
