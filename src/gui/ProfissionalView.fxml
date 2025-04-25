@@ -5,11 +5,13 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="478.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfissionalViewController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="481.0" prefWidth="1036.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.ProfissionalViewController">
    <children>
       <Label text="Atualização CBO profissional">
          <padding>
@@ -22,16 +24,38 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button fx:id="btAssociaCbo" mnemonicParsing="false" onAction="#onBtAssociaCboAction" text="Associar CBO" />
+            <Button fx:id="apagar" mnemonicParsing="false" onAction="#onBtApagarAction" text="Button" />
         </items>
       </ToolBar>
-      <TableView fx:id="tableViewProfissional" prefHeight="200.0" prefWidth="200.0">
+      <HBox prefHeight="33.0" prefWidth="1039.0">
+         <children>
+            <TextField fx:id="filtroNome" onKeyReleased="#onTextFieldFiltroKeyPress" prefHeight="25.0" prefWidth="488.0" promptText="Localizr por nome">
+               <HBox.margin>
+                  <Insets left="5.0" top="5.0" />
+               </HBox.margin>
+            </TextField>
+            <Label alignment="TOP_LEFT" contentDisplay="BOTTOM" text="Filtro">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <HBox.margin>
+                  <Insets left="10.0" top="10.0" />
+               </HBox.margin>
+            </Label>
+         </children>
+      </HBox>
+      <TableView fx:id="tableViewProfissional" prefHeight="200.0" prefWidth="968.0">
         <columns>
           <TableColumn fx:id="tableColumnNomeProf" prefWidth="300.0" text="Nome profissional" />
           <TableColumn fx:id="tableColumnFormacao" minWidth="4.0" prefWidth="200.0" text="Formação" />
             <TableColumn fx:id="tableColumnNumConselho" prefWidth="120.0" text="Número Conselho" />
             <TableColumn fx:id="tableColumnSigla" text="Sigla" />
-            <TableColumn fx:id="tableColumnCbo" prefWidth="75.0" text="CBO" />
+            <TableColumn fx:id="tableColumnCbo" prefWidth="195.0" text="CBO" />
+            <TableColumn fx:id="tableColumEDIT" prefWidth="148.0" />
         </columns>
+         <VBox.margin>
+            <Insets left="5.0" right="5.0" />
+         </VBox.margin>
       </TableView>
    </children>
 </VBox>

@@ -10,13 +10,13 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import model.dao.GeradorDeChaveDao;
+import model.dao.GeradorChaveDao;
 
 /**
  *
  * @author evandio.pereira
  */
-public class GeradorDeChaveDaoJDBC implements GeradorDeChaveDao {
+public class GeradorDeChaveDaoJDBC implements GeradorChaveDao{
 
     private static final byte INCREMENTO = 1;
     private Connection conn;
@@ -70,14 +70,14 @@ public class GeradorDeChaveDaoJDBC implements GeradorDeChaveDao {
             stmt.setString(2, tabela);
             stmt.executeUpdate();
             conn.commit();
+            conn.setAutoCommit(true);
             proximaChave = proximaChaveNova;
             maximaChave = maximaChaveNova;
 
-            
             rs.close();
             stmt.close();
-            conn.close();;
-            
+            //conn.close();;
+
         } catch (SQLException e) {
             StringBuffer msg = new StringBuffer("Não foi possível gerar a chave!");
             msg.append("\nMotivo: " + e.getMessage());
@@ -89,10 +89,10 @@ public class GeradorDeChaveDaoJDBC implements GeradorDeChaveDao {
     @Override
     public synchronized long getProximoCodigo(String tabela) {
         this.tabela = tabela;
-        if (proximaChave == maximaChave){
+        if (proximaChave == maximaChave) {
             reservarChave();
         }
-        
+
         return proximaChave;
     }
 

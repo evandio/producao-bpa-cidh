@@ -49,7 +49,7 @@ public class MainViewController implements Initializable {
     public void onMenuItemAssociaCboAction() {
         loadView("/gui/ProfissionalView.fxml", (ProfissionalViewController controller) -> {
             controller.setProfissionalService(new ProfissionalService());
-            controller.updateTableView();
+            controller.updateTableView("");
         });
     }
 

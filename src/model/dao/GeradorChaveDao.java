@@ -5,21 +5,12 @@
  */
 package model.dao;
 
-import java.util.List;
-import model.entities.Cbo;
-
 /**
  *
  * @author evandio.pereira
  */
-public interface CboDao {
+public interface GeradorChaveDao {
 
-    List<Cbo> listaCbosGil();
-
-    void gravarCbo(Cbo cbo);
-
-    void gravarCbo(List<Cbo> listaCbos);
-
-    List<Cbo> listaTodosCbosBpa();
+    long getProximoCodigo(String tabela);
 
 }

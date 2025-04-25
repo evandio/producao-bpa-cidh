@@ -10,7 +10,6 @@ import model.dao.CboDao;
 import model.dao.DaoFactory;
 import model.dao.ProfissionalDao;
 import model.entities.Cbo;
-import model.entities.CboProfissional;
 import model.entities.Profissional;
 
 /**

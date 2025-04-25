@@ -3,12 +3,13 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package model.dao;
+package gui.listener;
 
 /**
  *
  * @author evandio.pereira
  */
-public interface GeradorDeChaveDao {
-    long getProximoCodigo(String tabela);
+public interface DataChangeListener {
+
+    void onDataChange();
 }

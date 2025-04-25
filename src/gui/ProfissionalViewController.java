@@ -6,12 +6,14 @@
 package gui;
 
 import application.Main;
+import gui.listener.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -21,15 +23,18 @@ import javafx.fxml.Initializable;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
-import model.services.CboService;
+import model.services.CboProfissionalService;
 import model.services.ProfissionalService;
 
 /**
@@ -37,7 +42,7 @@ import model.services.ProfissionalService;
  *
  * @author evandio.pereira
  */
-public class ProfissionalViewController implements Initializable {
+public class ProfissionalViewController implements Initializable, DataChangeListener {
 
     private ProfissionalService service;
 
@@ -47,6 +52,26 @@ public class ProfissionalViewController implements Initializable {
     public void setProfissionalService(ProfissionalService service) {
         this.service = service;
     }
+
+    @FXML
+    private TextField filtroNome;
+
+    @FXML
+    public void onTextFieldFiltroKeyPress(KeyEvent event) {
+        updateTableView(filtroNome.getText());
+    }
+
+    @FXML
+    private Button apagar;
+
+    @FXML
+    public void onBtApagarAction(ActionEvent event) {
+        updateTableView("");
+        System.out.println("onBtApagarAction");
+    }
+
+    @FXML
+    private TableColumn<Profissional, Profissional> tableColumEDIT;
 
     @FXML
     private TableView<Profissional> tableViewProfissional;
@@ -71,8 +96,10 @@ public class ProfissionalViewController implements Initializable {
 
     public void onBtAssociaCboAction(ActionEvent event) {
         Stage parentStage = Utils.currentStage(event);
-        Profissional prof = service.localizarProfissional("ADRIANA COSTA E FORTI");
+        Profissional prof = service.localizarProfissional("ALINE CAVALCANTE BEZERRA");
+
         createDialogForm(prof, "/gui/ProfissionalForm.fxml", parentStage);
+
     }
 
     @Override
@@ -92,14 +119,17 @@ public class ProfissionalViewController implements Initializable {
         tableViewProfissional.prefHeightProperty().bind(stage.heightProperty());
     }
 
-    public void updateTableView() {
+    public void updateTableView(String nome) {
         if (service == null) {
             throw new IllegalStateException("Serviço está nulo!");
         }
 
-        List<Profissional> lista = service.localizarTodos();
-        obsList = FXCollections.observableArrayList(lista);
+        List<Profissional> lista = service.localizarProfissionais(nome);
+        obsList = FXCollections.observableList(lista);
         tableViewProfissional.setItems(obsList);
+        filtroNome.setFocusTraversable(false);
+        initEditButton();
+
     }
 
     private void createDialogForm(Profissional prof, String absoluteName, Stage parentStage) {
@@ -111,14 +141,14 @@ public class ProfissionalViewController implements Initializable {
 
             //Injeta o profissional preenchido no formulario
             controller.setEntityProf(prof);
-            
+
             //Injeta o servico para encontrar todos os Cbos
-            controller.setServiceCbo(new CboService());
-            
+            controller.setService(new CboProfissionalService());
+
+            controller.subscribeDataChangeListener(this);
+
             //Injeta todos os CBOs no formulario
             controller.updateFormData();
-            
-            
 
             Stage dialogStage = new Stage();
             dialogStage.setTitle("Associação de CBO ao profissional");
@@ -127,9 +157,41 @@ public class ProfissionalViewController implements Initializable {
             dialogStage.initOwner(parentStage);
             dialogStage.initModality(Modality.WINDOW_MODAL);
             dialogStage.showAndWait();
+            
+
+            filtroNome.setText("");
+            updateTableView("");
 
         } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Erro ao carregar a View", e.getMessage(), AlertType.ERROR);
         }
+    }
+
+    private void initEditButton() {
+        tableColumEDIT.setCellValueFactory(param -> new ReadOnlyObjectWrapper<>(param.getValue()));
+        tableColumEDIT.setCellFactory(param -> new TableCell<Profissional, Profissional>() {
+            private final Button button = new Button("Atualizar CBO");
+
+            @Override
+            protected void updateItem(Profissional obj, boolean empty) {
+                super.updateItem(obj, empty);
+
+                if (obj == null) {
+                    setGraphic(null);
+                    return;
+                }
+
+                setGraphic(button);
+                button.setOnAction(
+                        event -> createDialogForm(obj, "/gui/ProfissionalForm.fxml", Utils.currentStage(event))
+                );
+            }
+
+        });
+    }
+
+    @Override
+    public void onDataChange() {
+        updateTableView("");
     }
 }

@@ -5,7 +5,12 @@
  */
 package gui;
 
+import db.DbException;
+import gui.listener.DataChangeListener;
+import gui.util.Alerts;
+import gui.util.Utils;
 import java.net.URL;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
@@ -13,13 +18,14 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
 import model.entities.Cbo;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
-import model.services.CboService;
+import model.services.CboProfissionalService;
 
 /**
  * FXML Controller class
@@ -31,7 +37,11 @@ public class ProfissionalFormController implements Initializable {
     //Injetando a dependencia do Pforissional
     private Profissional entityProf;
     private ObservableList<Cbo> obsListCbo;
-    private CboService serviceCbo;
+    private CboProfissionalService service;
+    private Cbo entityCbo;
+    private CboProfissional entityCboProf;
+
+    private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
     //Declaracao dos componentes da Tela
     @FXML
@@ -54,7 +64,10 @@ public class ProfissionalFormController implements Initializable {
 
     @FXML
     public void onComboBoxAction(ActionEvent event) {
-        System.out.println("onComboBoxAction");
+        entityCbo = (Cbo) cboxCbos.getSelectionModel().getSelectedItem();
+        entityCboProf = entityProf.getCboProf();
+        entityCboProf.setCbo(entityCbo);
+        updateFormData();
     }
 
     @FXML
@@ -62,39 +75,51 @@ public class ProfissionalFormController implements Initializable {
 
     @FXML
     public void onBtAtualizarAction(ActionEvent event) {
-        System.out.println("onBtAtualizarAction");
-        Cbo c = (Cbo) cboxCbos.getSelectionModel().getSelectedItem();
-        
-        CboProfissional p = new CboProfissional();
-        p.setIsnProfissional(entityProf.getIsnUsuario());
-        p.setCbo(c);
-        entityProf.setCboProf(p);
-        updateFormData();
-        //modificar a entidade CboProf
-        //entityProf.setCboProf(cboProf);
-        
+
+        if (entityCbo == null) {
+            Alerts.showAlert("Escolha um CBO", null, "Não foi escolhido nenhum CBO", Alert.AlertType.INFORMATION);
+            throw new IllegalStateException("CBO está nulo!");
+        }
+
+        try {
+            service.saveOrUpdate(entityProf, entityCboProf);
+            notifyDataChangeListener();
+            Utils.currentStage(event).close();
+        } catch (DbException e) {
+            Alerts.showAlert("Erro!", null, "Não foi possível associar o \nCBO ao Profissional!", Alert.AlertType.ERROR);
+        }
+
     }
 
     @FXML
     private Button btCancel;
 
     @FXML
+    @SuppressWarnings("empty-statement")
     public void onBtCancelAction(ActionEvent event) {
-        System.out.println("onBtCancelAction");
+        Utils.currentStage(event).close();;
     }
 
     public void setEntityProf(Profissional entityProf) {
         this.entityProf = entityProf;
     }
 
-    public void setServiceCbo(CboService serviceCbo) {
-        this.serviceCbo = serviceCbo;
+    public void setService(CboProfissionalService service) {
+        this.service = service;
+    }
+
+    public void subscribeDataChangeListener(DataChangeListener listener) {
+        dataChangeListeners.add(listener);
     }
 
     public void updateFormData() {
 
         if (entityProf == null) {
-            throw new IllegalStateException("Entidade está nula");
+            throw new IllegalStateException("Profissional está nulo!");
+        }
+
+        if (service == null) {
+            throw new IllegalStateException("O servico está nulo!");
         }
 
         txtProfissional.setText(entityProf.getDscUsuario());
@@ -103,13 +128,13 @@ public class ProfissionalFormController implements Initializable {
         txtSiglaConselho.setText(entityProf.getSglConselho());
 
         //Caso venha null significa que não tem CBO associado ao profissional
-        if (entityProf.getCboProf() == null) {
+        if (entityProf.getCboProf().getCbo() == null) {
             txtCbo.setText("");
         } else {
             txtCbo.setText(entityProf.getCboProf().getCbo().getDsc_cbo());
         }
 
-        List<Cbo> list = serviceCbo.todosCbos();
+        List<Cbo> list = service.todosCbos();
         obsListCbo = FXCollections.observableArrayList(list).sorted();
         cboxCbos.setItems(obsListCbo);
 
@@ -117,10 +142,19 @@ public class ProfissionalFormController implements Initializable {
 
     /**
      * Initializes the controller class.
+     * @param url
+     * @param rb
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
 
+    }
+
+    //Avisa para quem se inscreveu que houve mudancas;
+    private void notifyDataChangeListener() {
+        for (DataChangeListener listener : dataChangeListeners) {
+            listener.onDataChange();
+        }
     }
 
 }

@@ -5,20 +5,19 @@
  */
 package model.services;
 
-import java.util.List;
-import model.dao.CboDao;
 import model.dao.DaoFactory;
-import model.entities.Cbo;
+import model.dao.PacienteDao;
+import model.entities.Paciente;
 
 /**
  *
  * @author evandio.pereira
  */
-public class CboService {
+public class PacienteService {
 
-    private CboDao dao = DaoFactory.createCboDaoBpa();
+    private PacienteDao dao = DaoFactory.createPacienteDao();
 
-    public List<Cbo> todosCbos() {
-        return dao.listaTodosCbosBpa();
+    public Paciente localizarPaciente(String numProntuario) {
+        return dao.encontrarPaciente(numProntuario);
     }
 }

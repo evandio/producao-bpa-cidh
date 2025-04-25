@@ -80,7 +80,7 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
 
         try {
             st = conn.prepareStatement(sql);
-            st.setString(1, nome.toUpperCase());
+            st.setString(1, "%" + nome.toUpperCase() + "%");
             rs = st.executeQuery();
 
             List<Profissional> list = new ArrayList<>();
@@ -136,16 +136,14 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         prof.setDscFormacao(rs.getString("dsc_formacao"));
         prof.setNumConselho(rs.getString("num_conselho"));
         prof.setSglConselho(rs.getString("sgl_conselho"));
-        
 
         //Tenrar relacionar o Profissional com o CBO
         //--->Buscar o Cbo
         CboProfissionalService service = new CboProfissionalService();
         CboProfissional objCbo = service.localizarCboProfissional(prof);
-        
+
         prof.setCboProf(objCbo);
-        
-        
+
         return prof;
     }
 

@@ -11,9 +11,10 @@ import model.dao.imp.ProfissionalDaoJDBC;
 import db.DB_Vitae;
 import model.dao.imp.CboDaoJDBC;
 import model.dao.imp.CboProfissionalDaoJDBC;
+import model.dao.imp.DiagnosticoDaoJDBC;
 import model.dao.imp.GeradorDeChaveDaoJDBC;
+import model.dao.imp.PacienteDaoJDBC;
 import model.dao.imp.ProcedimentoJDBC;
-
 
 /**
  *
@@ -25,7 +26,7 @@ public class DaoFactory {
         return new ProfissionalDaoJDBC(DB_Vitae.getConnection());
     }
 
-    public static GeradorDeChaveDao createGeradorDeChaveDao() {
+    public static GeradorChaveDao createGeradorChaveDao() {
         return new GeradorDeChaveDaoJDBC(DB_Bpa.getConnection());
     }
 
@@ -41,12 +42,20 @@ public class DaoFactory {
         return new ProcedimentoJDBC(DB_Gil.getConnection());
     }
 
-    public static ProcedimentoDao createProcedimentoBpa() {
+    public static ProcedimentoDao createProcedimentoBpaDao() {
         return new ProcedimentoJDBC(DB_Bpa.getConnection());
     }
 
     public static CboProfissionalDao createCboProfissional() {
         return new CboProfissionalDaoJDBC(DB_Bpa.getConnection());
+    }
+
+    public static PacienteDao createPacienteDao() {
+        return new PacienteDaoJDBC(DB_Vitae.getConnection());
+    }
+
+    public static DiagnosticoDao createDiagnosticoDao() {
+        return new DiagnosticoDaoJDBC(DB_Bpa.getConnection());
     }
 
 }

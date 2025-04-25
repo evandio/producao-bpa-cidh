@@ -6,20 +6,18 @@
 package model.dao;
 
 import java.util.List;
-import model.entities.Cbo;
+import model.entities.Paciente;
 
 /**
  *
  * @author evandio.pereira
  */
-public interface CboDao {
+public interface PacienteDao {
 
-    List<Cbo> listaCbosGil();
+    List<Paciente> encontrarPacientes(String dscNome);
 
-    void gravarCbo(Cbo cbo);
+    Paciente encontrarPaciente(String numProntuario);
 
-    void gravarCbo(List<Cbo> listaCbos);
-
-    List<Cbo> listaTodosCbosBpa();
+    Paciente encontrarPaciente(Integer isnPaciente);
 
 }

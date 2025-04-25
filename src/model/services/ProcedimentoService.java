@@ -17,7 +17,7 @@ import model.entities.Procedimento;
 public class ProcedimentoService {
 
     private ProcedimentoDao daoGil = DaoFactory.createProcedimentoGil();
-    private ProcedimentoDao daoBpa = DaoFactory.createProcedimentoBpa();
+    private ProcedimentoDao daoBpa = DaoFactory.createProcedimentoBpaDao();
 
     public List<Procedimento> listaProcedimentosGil() {
         return daoGil.listaProcedimentoGil();

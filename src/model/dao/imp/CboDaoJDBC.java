@@ -16,8 +16,6 @@ import java.util.ArrayList;
 import java.util.List;
 import model.dao.CboDao;
 import model.entities.Cbo;
-import model.entities.CboProfissional;
-import model.entities.Profissional;
 
 /**
  *

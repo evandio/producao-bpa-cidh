@@ -5,8 +5,11 @@
  */
 package model.services;
 
+import java.util.List;
+import model.dao.CboDao;
 import model.dao.CboProfissionalDao;
 import model.dao.DaoFactory;
+import model.entities.Cbo;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
 
@@ -16,9 +19,23 @@ import model.entities.Profissional;
  */
 public class CboProfissionalService {
 
-    private CboProfissionalDao dao = DaoFactory.createCboProfissional();
+    private CboProfissionalDao daoCboProf = DaoFactory.createCboProfissional();
+    private CboDao daoCbo = DaoFactory.createCboDaoBpa();
 
     public CboProfissional localizarCboProfissional(Profissional obj) {
-        return dao.buscarCboProfissional(obj);
+        return daoCboProf.buscarCboProfissional(obj);
     }
+
+    public void saveOrUpdate(Profissional objProf, CboProfissional objCbo) {
+        if (objCbo.getIsnProfissional() == null) {
+            daoCboProf.gravarCboProf(objProf, objCbo);
+        } else {
+            daoCboProf.updateCboProf(objProf, objCbo);
+        }
+    }
+
+    public List<Cbo> todosCbos() {
+        return daoCbo.listaTodosCbosBpa();
+    }
+
 }
