@@ -13,7 +13,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import model.dao.ProfissionalDao;
-import model.entities.Cbo;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
 import model.services.CboProfissionalService;
@@ -128,6 +127,38 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         }
     }
 
+    public Profissional localizarProfissional(Integer isnProfissional) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String sql = "select * "
+                + "from "
+                + " seguranca.t_usuario a, seguranca.t_formacao b, seguranca.t_conselho c "
+                + "where "
+                + " a.isn_formacao > 0 "
+                + "and a.flg_situacao = 'S' "
+                + "and a.isn_formacao = b.isn_formacao "
+                + "and a.isn_conselho = c.isn_conselho "
+                + "and a.isn_usuario = ? "
+                + "order by a.dsc_usuario ";
+
+        try {
+            st = conn.prepareStatement(sql);
+            st.setInt(1, isnProfissional);
+            rs = st.executeQuery();
+
+            Profissional prof = new Profissional();
+
+            while (rs.next()) {
+                prof = instatiateProfissional(rs);
+            }
+
+            return prof;
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+    }
+
     private Profissional instatiateProfissional(ResultSet rs) throws SQLException {
         Profissional prof = new Profissional();
         prof.setIsnUsuario(rs.getInt("isn_usuario"));
@@ -142,9 +173,8 @@ public class ProfissionalDaoJDBC implements ProfissionalDao {
         CboProfissionalService service = new CboProfissionalService();
         CboProfissional objCbo = service.localizarCboProfissional(prof);
 
-        prof.setCboProf(objCbo);
+        prof.setObjCboProf(objCbo);
 
         return prof;
     }
-
 }

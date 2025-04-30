@@ -53,6 +53,31 @@ public class CboProfissionalDaoJDBC implements CboProfissionalDao {
 
         return rlProfCbo;
     }
+    
+    @Override
+    public CboProfissional buscarCboProfissional(String isnCbo) {
+        PreparedStatement st = null;
+        ResultSet rs = null;
+
+        String sql = "SELECT * FROM bpa_cidh.rl_prof_cbo a where a.isn_profissional = ? ";
+
+        CboProfissional rlProfCbo = new CboProfissional();
+
+        try {
+            st = conn.prepareStatement(sql);
+            st.setString(1, isnCbo);
+            rs = st.executeQuery();
+
+            while (rs.next()) {
+                rlProfCbo = instantiateCboProf(rs);
+            }
+
+        } catch (SQLException e) {
+            throw new DbException(e.getMessage());
+        }
+
+        return rlProfCbo;
+    }
 
     private CboProfissional instantiateCboProf(ResultSet rs) throws SQLException {
         CboProfissional obj = new CboProfissional();
@@ -68,10 +93,10 @@ public class CboProfissionalDaoJDBC implements CboProfissionalDao {
     }
 
     @Override
-    public void gravarCboProf(Profissional objProf, CboProfissional objCbo) {
+    public void gravarCboProf(Profissional objProf) {
 
         Profissional p = objProf;
-        CboProfissional c = objCbo;
+        
 
         PreparedStatement st = null;
 
@@ -80,8 +105,8 @@ public class CboProfissionalDaoJDBC implements CboProfissionalDao {
         try {
             st = conn.prepareStatement(sql);
             st.setInt(1, p.getIsnUsuario());
-            st.setInt(2, Utils.tryParseToInt(c.getCbo().getIsn_cbo()));
-            st.setString(3, c.getCbo().getDsc_cbo());
+            st.setInt(2, Utils.tryParseToInt(p.getObjCboProf().getCbo().getIsn_cbo()));
+            st.setString(3, p.getObjCboProf().getCbo().getDsc_cbo());
 
             st.execute();
 
@@ -93,9 +118,9 @@ public class CboProfissionalDaoJDBC implements CboProfissionalDao {
     }
 
     @Override
-    public void updateCboProf(Profissional objProf, CboProfissional objCbo) {
+    public void updateCboProf(Profissional objProf) {
         Profissional p = objProf;
-        CboProfissional c = objCbo;
+        
 
         PreparedStatement st = null;
 
@@ -104,8 +129,8 @@ public class CboProfissionalDaoJDBC implements CboProfissionalDao {
 
         try {
             st = conn.prepareStatement(sql);
-            st.setString(1, c.getCbo().getIsn_cbo());
-            st.setString(2, c.getCbo().getDsc_cbo());
+            st.setString(1, p.getObjCboProf().getCbo().getIsn_cbo());
+            st.setString(2, p.getObjCboProf().getCbo().getDsc_cbo());
             st.setInt(3, p.getIsnUsuario());
 
             st.execute();

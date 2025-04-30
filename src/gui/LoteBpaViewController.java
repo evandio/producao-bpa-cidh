@@ -6,20 +6,28 @@
 package gui;
 
 import application.Main;
+import gui.listener.DataChangeListener;
+import gui.util.Alerts;
 import gui.util.Utils;
+import java.io.IOException;
 import java.net.URL;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 import java.util.ResourceBundle;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
+import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.Pane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 import model.entities.LoteBpa;
 import model.entities.Profissional;
@@ -30,7 +38,7 @@ import model.services.LoteBpaService;
  *
  * @author evandio.pereira
  */
-public class BpaViewController implements Initializable {
+public class LoteBpaViewController implements Initializable, DataChangeListener {
 
     //Injetar a dependencia do servico sem o acoplamento forte
     private LoteBpaService service;
@@ -69,18 +77,44 @@ public class BpaViewController implements Initializable {
             throw new IllegalStateException("Serviço está nulo!");
         }
 
-        List<LoteBpa> lista = service.localizarTodos();
+        List<LoteBpa> lista = service.listaTodos();
         obsList = FXCollections.observableArrayList(lista);
         tableViewLoteBpa.setItems(obsList);
-
     }
 
     @FXML
     private Button btNovoBpa;
 
     @FXML
-    public void onBtNovoBpaAction() {
+    public void onBtNovoBpaAction(ActionEvent event) {
         System.out.println("onBtNovoBpaAction");
+        Stage parentStage = Utils.currentStage(event);
+        
+        LoteBpa obj = new LoteBpa();
+        
+        createDialogForm(obj, "/gui/LoteBpaForm.fxml", parentStage);
+    }
+
+    private void createDialogForm(LoteBpa objLote, String absoluteName, Stage parentStage) {
+        try {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+        Pane pane = loader.load();
+        
+        LoteBpaFormController controller = loader.getController();
+        
+        
+        Stage dialogStage = new Stage();
+        dialogStage.setTitle("Cadastrar Lote");
+        dialogStage.setScene(new Scene(pane));
+        dialogStage.setResizable(false);
+        dialogStage.initOwner(parentStage);
+        dialogStage.initModality(Modality.WINDOW_MODAL);
+        dialogStage.showAndWait();
+        
+        }catch (IOException e){
+            Alerts.showAlert("IO Exception", "Erro ao carregar a View", e.getMessage(), AlertType.ERROR);
+        }
+        
     }
 
     /**
@@ -93,24 +127,30 @@ public class BpaViewController implements Initializable {
 
     private void initializeNodes() {
 
-        //Precisa associar as variáveis aos IDs do FXML na Tela do SceneBuild
-        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa"));
-        
+        //Precisa associar as variáveis aos IDs do FXML na Tela do SceneBuild 
+        tableColumnLote.setCellValueFactory(new PropertyValueFactory<>("loteBpa")); //nome da valriavel na entitie
 
         tableColumnDataAtendimento.setCellValueFactory(new PropertyValueFactory<>("dataAtendimento"));
         //Formatação da coluna
         Utils.formatTableColumnDate(tableColumnDataAtendimento, "dd/MM/yyyy");
-        
+
         tableColumnProfissional.setCellValueFactory(new PropertyValueFactory<>("profissional"));
         //Formatação da coluna
         Utils.formatTableColumProfissional(tableColumnProfissional, 1);
-        
+
         tableColumnQtdAtendimento.setCellValueFactory(new PropertyValueFactory<>("qtdAtendimento"));
 
         tableColumnTurno.setCellValueFactory(new PropertyValueFactory<>("turno"));
 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewLoteBpa.prefHeightProperty().bind(stage.heightProperty());
+    }
+    
+  
+
+    @Override
+    public void onDataChange() {
+        updateTableView();
     }
 
 }

@@ -15,9 +15,11 @@ import model.entities.Profissional;
 public interface CboProfissionalDao {
 
     CboProfissional buscarCboProfissional(Profissional obj);
+    
+    CboProfissional buscarCboProfissional(String isnCbo);
 
-    void gravarCboProf(Profissional objProf, CboProfissional objCbo);
+    void gravarCboProf(Profissional objProf);
 
-    void updateCboProf(Profissional objProf, CboProfissional objCbo);
+    void updateCboProf(Profissional objProf);
 
 }

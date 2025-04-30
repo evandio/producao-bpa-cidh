@@ -25,17 +25,23 @@ public class CboProfissionalService {
     public CboProfissional localizarCboProfissional(Profissional obj) {
         return daoCboProf.buscarCboProfissional(obj);
     }
+    
+    public CboProfissional localizarCboProfissional(String isnCbo) {
+        return daoCboProf.buscarCboProfissional(isnCbo);
+    }
 
-    public void saveOrUpdate(Profissional objProf, CboProfissional objCbo) {
-        if (objCbo.getIsnProfissional() == null) {
-            daoCboProf.gravarCboProf(objProf, objCbo);
+    public void saveOrUpdate(Profissional objProf) {
+        if (objProf.getObjCboProf().getIsnProfissional() == null) {
+            daoCboProf.gravarCboProf(objProf);
         } else {
-            daoCboProf.updateCboProf(objProf, objCbo);
+            daoCboProf.updateCboProf(objProf);
         }
     }
 
     public List<Cbo> todosCbos() {
         return daoCbo.listaTodosCbosBpa();
     }
+    
+   
 
 }

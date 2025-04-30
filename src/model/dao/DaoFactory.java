@@ -9,6 +9,7 @@ import db.DB_Bpa;
 import db.DB_Gil;
 import model.dao.imp.ProfissionalDaoJDBC;
 import db.DB_Vitae;
+import model.dao.imp.LoteBpaDaoJDBC;
 import model.dao.imp.CboDaoJDBC;
 import model.dao.imp.CboProfissionalDaoJDBC;
 import model.dao.imp.DiagnosticoDaoJDBC;
@@ -56,6 +57,10 @@ public class DaoFactory {
 
     public static DiagnosticoDao createDiagnosticoDao() {
         return new DiagnosticoDaoJDBC(DB_Bpa.getConnection());
+    }
+
+    public static LoteBpaDao createBpaDao() {
+        return new LoteBpaDaoJDBC(DB_Bpa.getConnection());
     }
 
 }

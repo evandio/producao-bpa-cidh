@@ -18,6 +18,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.VBox;
+import model.services.DiagnosticoService;
 import model.services.LoteBpaService;
 import model.services.ProfissionalService;
 
@@ -32,10 +33,10 @@ public class MainViewController implements Initializable {
     @FXML
     private MenuItem menuItemCadastroBpa;
 
-     @FXML
+    @FXML
     public void onMenuItemCadastroBpaAction() {
         //Função de inicialização como parêmetro. Utilização de expressão Lambida
-        loadView("/gui/BpaView.fxml", (BpaViewController controller) -> {
+        loadView("/gui/LoteBpaView.fxml", (LoteBpaViewController controller) -> {
             controller.setLoteBpaService(new LoteBpaService());
             controller.updateTableView();
         });
@@ -44,12 +45,24 @@ public class MainViewController implements Initializable {
     @FXML
     private MenuItem menuItemAssociaCbo;
 
-
-     @FXML
+    @FXML
     public void onMenuItemAssociaCboAction() {
         loadView("/gui/ProfissionalView.fxml", (ProfissionalViewController controller) -> {
             controller.setProfissionalService(new ProfissionalService());
             controller.updateTableView("");
+        });
+    }
+
+    //MenuItem para cadastro do Diagnostico
+    @FXML
+    private MenuItem menuItemDiagnostico;
+
+    //Acessar a GUI do cadastro do diagnóstico
+    @FXML
+    public void onMenuItemDiagnosticoAction() {
+        loadView("/gui/DiagnosticoView.fxml", (DiagnosticoViewController controller) -> {
+            controller.setService(new DiagnosticoService());
+            controller.updateTableView();//Verifiscar se esse sera o método
         });
     }
 

@@ -82,14 +82,15 @@ public class DiagnosticoDaoJDBC implements DiagnosticoDao {
         PreparedStatement st = null;
 
         String sql = "INSERT INTO bpa_cidh.tb_diagnostico "
-                + " (isn_diagnostico, dsc_diagnostico) "
+                + " (isn_diagnostico, dsc_diagnostico, data_cadastro ) "
                 + " VALUES "
-                + " (?, ?) ";
+                + " (?, ?, ?) ";
         try {
             st = conn.prepareStatement(sql);
             st.setInt(1, obj.getIsnDiagnostico());
             st.setString(2, obj.getDscDiagnostico());
-
+            st.setDate(3, new java.sql.Date(obj.getDataCadastro().getTime()));
+            
             st.execute();
 
         } catch (SQLException e) {
@@ -104,7 +105,7 @@ public class DiagnosticoDaoJDBC implements DiagnosticoDao {
     public void atualizar(Diagnostico obj) {
         PreparedStatement st = null;
 
-        String sql = "UPDATE bpa_cidh.tb_diagnostico SET dsc_diagnostico = ? WHERE isn_diagnosticoo = ? ";
+        String sql = "UPDATE bpa_cidh.tb_diagnostico SET dsc_diagnostico = ? WHERE isn_diagnostico = ? ";
 
         try {
             st = conn.prepareStatement(sql);
@@ -123,8 +124,9 @@ public class DiagnosticoDaoJDBC implements DiagnosticoDao {
     private Diagnostico instantiateDiagnostico(ResultSet rs) throws SQLException {
         Diagnostico d = new Diagnostico();
 
+        d.setDataCadastro(new java.util.Date(rs.getTimestamp("data_cadastro").getTime()));
         d.setIsnDiagnostico(rs.getInt("isn_diagnostico"));
-        d.setDscDiagnostico(rs.getString("dsc_disgnostico"));
+        d.setDscDiagnostico(rs.getString("dsc_diagnostico"));
 
         return d;
     }

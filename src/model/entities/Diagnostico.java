@@ -6,6 +6,7 @@
 package model.entities;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -16,6 +17,7 @@ public class Diagnostico implements Serializable {
 
     private Integer isnDiagnostico;
     private String dscDiagnostico;
+    private Date dataCadastro;
 
     public Integer getIsnDiagnostico() {
         return isnDiagnostico;
@@ -36,9 +38,20 @@ public class Diagnostico implements Serializable {
     public Diagnostico() {
     }
 
-    public Diagnostico(Integer isnDiagnostico, String dscDiagnostico) {
+    public Date getDataCadastro() {
+        return dataCadastro;
+    }
+
+    public void setDataCadastro(Date dataCadastro) {
+        this.dataCadastro = dataCadastro;
+    }
+    
+    
+
+    public Diagnostico(Integer isnDiagnostico, String dscDiagnostico, Date dataCadastro) {
         this.isnDiagnostico = isnDiagnostico;
         this.dscDiagnostico = dscDiagnostico;
+        this.dataCadastro = dataCadastro;
     }
 
     @Override
@@ -68,8 +81,10 @@ public class Diagnostico implements Serializable {
 
     @Override
     public String toString() {
-        return "Diagnostico{" + "isnDiagnostico=" + isnDiagnostico + ", dscDiagnostico=" + dscDiagnostico + '}';
+        return "Diagnostico{" + "isnDiagnostico=" + isnDiagnostico + ", dscDiagnostico=" + dscDiagnostico + ", dataCadastro=" + dataCadastro + '}';
     }
+
+     
 
     
 }

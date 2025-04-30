@@ -35,11 +35,10 @@ import model.services.CboProfissionalService;
 public class ProfissionalFormController implements Initializable {
 
     //Injetando a dependencia do Pforissional
-    private Profissional entityProf;
+    private Profissional objProf;
     private ObservableList<Cbo> obsListCbo;
     private CboProfissionalService service;
-    private Cbo entityCbo;
-    private CboProfissional entityCboProf;
+    private CboProfissional objCboProf;
 
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
@@ -64,9 +63,10 @@ public class ProfissionalFormController implements Initializable {
 
     @FXML
     public void onComboBoxAction(ActionEvent event) {
-        entityCbo = (Cbo) cboxCbos.getSelectionModel().getSelectedItem();
-        entityCboProf = entityProf.getCboProf();
-        entityCboProf.setCbo(entityCbo);
+        Cbo objCbo = (Cbo) cboxCbos.getSelectionModel().getSelectedItem();
+        objCboProf = objProf.getObjCboProf();
+        objCboProf.setCbo(objCbo);
+        objProf.setObjCboProf(objCboProf);
         updateFormData();
     }
 
@@ -76,13 +76,13 @@ public class ProfissionalFormController implements Initializable {
     @FXML
     public void onBtAtualizarAction(ActionEvent event) {
 
-        if (entityCbo == null) {
+        if (objCboProf == null) {
             Alerts.showAlert("Escolha um CBO", null, "Não foi escolhido nenhum CBO", Alert.AlertType.INFORMATION);
             throw new IllegalStateException("CBO está nulo!");
         }
 
         try {
-            service.saveOrUpdate(entityProf, entityCboProf);
+            service.saveOrUpdate(objProf);
             notifyDataChangeListener();
             Utils.currentStage(event).close();
         } catch (DbException e) {
@@ -100,9 +100,11 @@ public class ProfissionalFormController implements Initializable {
         Utils.currentStage(event).close();;
     }
 
-    public void setEntityProf(Profissional entityProf) {
-        this.entityProf = entityProf;
+    public void setObjProf(Profissional objProf) {
+        this.objProf = objProf;
     }
+    
+    
 
     public void setService(CboProfissionalService service) {
         this.service = service;
@@ -114,7 +116,7 @@ public class ProfissionalFormController implements Initializable {
 
     public void updateFormData() {
 
-        if (entityProf == null) {
+        if (objProf == null) {
             throw new IllegalStateException("Profissional está nulo!");
         }
 
@@ -122,16 +124,16 @@ public class ProfissionalFormController implements Initializable {
             throw new IllegalStateException("O servico está nulo!");
         }
 
-        txtProfissional.setText(entityProf.getDscUsuario());
-        txtFormacao.setText(entityProf.getDscFormacao());
-        txtNumConselho.setText(entityProf.getNumConselho());
-        txtSiglaConselho.setText(entityProf.getSglConselho());
+        txtProfissional.setText(objProf.getDscUsuario());
+        txtFormacao.setText(objProf.getDscFormacao());
+        txtNumConselho.setText(objProf.getNumConselho());
+        txtSiglaConselho.setText(objProf.getSglConselho());
 
         //Caso venha null significa que não tem CBO associado ao profissional
-        if (entityProf.getCboProf().getCbo() == null) {
+        if (objProf.getObjCboProf().getCbo() == null) {
             txtCbo.setText("");
         } else {
-            txtCbo.setText(entityProf.getCboProf().getCbo().getDsc_cbo());
+            txtCbo.setText(objProf.getObjCboProf().getCbo().getDsc_cbo());
         }
 
         List<Cbo> list = service.todosCbos();
@@ -142,6 +144,7 @@ public class ProfissionalFormController implements Initializable {
 
     /**
      * Initializes the controller class.
+     *
      * @param url
      * @param rb
      */

@@ -22,7 +22,7 @@ public class Profissional implements Serializable {
     private String dscFormacao;
     private String numConselho;
     private String sglConselho;
-    private CboProfissional cboProf;
+    private CboProfissional objCboProf;
 
     public Integer getIsnUsuario() {
         return isnUsuario;
@@ -72,6 +72,17 @@ public class Profissional implements Serializable {
         this.sglConselho = sglConselho;
     }
 
+    public CboProfissional getObjCboProf() {
+        return objCboProf;
+    }
+
+    public void setObjCboProf(CboProfissional objCboProf) {
+        this.objCboProf = objCboProf;
+    }
+
+
+   
+
     @Override
     public int hashCode() {
         int hash = 7;
@@ -99,29 +110,22 @@ public class Profissional implements Serializable {
     public Profissional() {
     }
 
-    public CboProfissional getCboProf() {
-        return cboProf;
-    }
-
-    public void setCboProf(CboProfissional cboProf) {
-        this.cboProf = cboProf;
-    }
-
-    public Profissional(Integer isnUsuario, String dscUsuario, Integer insFormacao, String dscFormacao, String numConselho, String sglConselho, CboProfissional cboProf) {
+    public Profissional(Integer isnUsuario, String dscUsuario, Integer insFormacao, String dscFormacao, String numConselho, String sglConselho, CboProfissional objCboProf) {
         this.isnUsuario = isnUsuario;
         this.dscUsuario = dscUsuario;
         this.insFormacao = insFormacao;
         this.dscFormacao = dscFormacao;
         this.numConselho = numConselho;
         this.sglConselho = sglConselho;
-        this.cboProf = cboProf;
+        this.objCboProf = objCboProf;
     }
 
     @Override
     public String toString() {
-        return "Profissional{" + "isnUsuario=" + isnUsuario + ", dscUsuario=" + dscUsuario + ", insFormacao=" + insFormacao + ", dscFormacao=" + dscFormacao + ", numConselho=" + numConselho + ", sglConselho=" + sglConselho + ", cboProf=" + cboProf + '}';
+        return "Profissional{" + "isnUsuario=" + isnUsuario + ", dscUsuario=" + dscUsuario + ", insFormacao=" + insFormacao + ", dscFormacao=" + dscFormacao + ", numConselho=" + numConselho + ", sglConselho=" + sglConselho + ", objCboProf=" + objCboProf + '}';
     }
 
+   
     
 
 }

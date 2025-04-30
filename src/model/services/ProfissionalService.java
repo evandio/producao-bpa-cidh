@@ -32,6 +32,10 @@ public class ProfissionalService {
     public Profissional localizarProfissional(String nome) {
         return dao.localizarProfissional(nome);
     }
+    
+    public Profissional localizarProfissional(Integer isnProfissional) {
+        return dao.localizarProfissional(isnProfissional);
+    }
 
     public List<Cbo> todosCbosBpa() {
         return daoCbo.listaTodosCbosBpa();

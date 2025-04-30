@@ -44,7 +44,7 @@
             </Label>
          </children>
       </HBox>
-      <TableView fx:id="tableViewProfissional" prefHeight="200.0" prefWidth="968.0">
+      <TableView fx:id="tableViewProfissional" accessibleHelp="Duplo click para selecionar" prefHeight="200.0" prefWidth="968.0">
         <columns>
           <TableColumn fx:id="tableColumnNomeProf" prefWidth="300.0" text="Nome profissional" />
           <TableColumn fx:id="tableColumnFormacao" minWidth="4.0" prefWidth="200.0" text="Formação" />

@@ -17,6 +17,7 @@
                   <items>
                     <MenuItem fx:id="menuItemCadastroBpa" mnemonicParsing="false" onAction="#onMenuItemCadastroBpaAction" text="BPA" />
                         <MenuItem fx:id="menuItemAssociaCbo" mnemonicParsing="false" onAction="#onMenuItemAssociaCboAction" text="Associar CBO" />
+                        <MenuItem fx:id="menuItemDiagnostico" mnemonicParsing="false" onAction="#onMenuItemDiagnosticoAction" text="Diagnóstico" />
                   </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Ajuda">
