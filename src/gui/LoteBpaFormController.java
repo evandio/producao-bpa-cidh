@@ -75,8 +75,10 @@ public class LoteBpaFormController implements Initializable {
     public void initialize(URL url, ResourceBundle rb) {
         // TODO
         
-        rbManha.setToggleGroup(turnoGroup);
-        rbTarde.setToggleGroup(turnoGroup);
+        
+        //isso traz um erro
+       // rbManha.setToggleGroup(turnoGroup);
+        //rbTarde.setToggleGroup(turnoGroup);
     }
 
 }
