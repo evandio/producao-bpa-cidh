@@ -16,11 +16,11 @@ public interface LoteBpaDao {
 
     List<LoteBpa> listaBpa();
 
-    void saveOrUpdateLote(LoteBpa obj);
-
     void inserir(LoteBpa obj);
 
     void atualizar(LoteBpa obj);
+
+    boolean existsLoteBpa(Integer isnProfissional, java.util.Date dataAtendimento, int turno, Integer nrLote);
 
     void closeLote(Object obj);
 

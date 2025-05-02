@@ -27,7 +27,9 @@ import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
@@ -45,11 +47,23 @@ public class ProfissionalViewController implements Initializable, DataChangeList
 
     private ProfissionalService service;
 
+    private Profissional objProfissional;
+
     private ObservableList<Profissional> obsList;
+
+    private boolean isSelectionMode = false; // Flag para modo de seleção
+
+    public void setSelectionMode(boolean isSelectionMode) {
+        this.isSelectionMode = isSelectionMode;
+    }
 
     //Principio solid de inversao de controle 
     public void setProfissionalService(ProfissionalService service) {
         this.service = service;
+    }
+
+    public Profissional getObjProfissional() {
+        return objProfissional;
     }
 
     @FXML
@@ -61,12 +75,16 @@ public class ProfissionalViewController implements Initializable, DataChangeList
     }
 
     @FXML
-    private Button apagar;
+    private Button btSelecionar;
 
     @FXML
-    public void onBtApagarAction(ActionEvent event) {
-        updateTableView("");
-        System.out.println("onBtApagarAction");
+    public void onBtSelecionarAction(ActionEvent event) {
+        if (objProfissional != null) {
+            Stage currentStage = Utils.currentStage(event);
+            currentStage.close();
+        } else {
+            Alerts.showAlert("Avaiso", null, "Nenhum profissional selecionado!", AlertType.WARNING);
+        }
     }
 
     @FXML
@@ -95,7 +113,7 @@ public class ProfissionalViewController implements Initializable, DataChangeList
 
     public void onBtAssociaCboAction(ActionEvent event) {
         Stage parentStage = Utils.currentStage(event);
-        Profissional prof = service.localizarProfissional("ALINE CAVALCANTE BEZERRA");
+        Profissional prof = getObjProfissional();
 
         createDialogForm(prof, "/gui/ProfissionalForm.fxml", parentStage);
 
@@ -103,7 +121,14 @@ public class ProfissionalViewController implements Initializable, DataChangeList
 
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+        initDoubleClickHandler();
+        initKeyboardNavigation();
         initializeNodes();
+
+        // Configura a visibilidade do botão Selecionar
+        if (btSelecionar != null) {
+            btSelecionar.setVisible(isSelectionMode);
+        }
     }
 
     public void updateTableView(String nome) {
@@ -116,9 +141,20 @@ public class ProfissionalViewController implements Initializable, DataChangeList
         tableViewProfissional.setItems(obsList);
         filtroNome.setFocusTraversable(false); //não focar na variavel filtroNome;
 
-        //Abre o formulario do profissional com 2 clicks
-        initDoubleClickHandler();
+        // Garante que a TableView tenha foco após atualizar
+        tableViewProfissional.requestFocus();
+        // Seleciona a primeira linha por padrão, se houver itens
+        if (!obsList.isEmpty()) {
+            tableViewProfissional.getSelectionModel().selectFirst();
+            objProfissional = obsList.get(0);
+        } else {
+            objProfissional = null;
+        }
 
+        // Atualiza a visibilidade do botão Selecionar
+        if (btSelecionar != null) {
+            btSelecionar.setVisible(isSelectionMode);
+        }
     }
 
     private void createDialogForm(Profissional prof, String absoluteName, Stage parentStage) {
@@ -155,11 +191,17 @@ public class ProfissionalViewController implements Initializable, DataChangeList
         }
     }
 
-    private void initDoubleClickHandler() { 
+    private void initDoubleClickHandler() {
         tableViewProfissional.setRowFactory(tv -> {
             TableRow<Profissional> row = new TableRow<>();
 
             row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 1 && (!row.isEmpty())) {
+                    Profissional profissionalSelecionado = row.getItem();
+                    objProfissional = profissionalSelecionado;
+                    tableViewProfissional.getSelectionModel().select(row.getIndex());
+                }
+
                 if (event.getClickCount() == 2 && (!row.isEmpty())) {
                     Profissional profissionalSelecionado = row.getItem();
                     createDialogForm(profissionalSelecionado,
@@ -168,6 +210,32 @@ public class ProfissionalViewController implements Initializable, DataChangeList
             });
             return row;
         });
+    }
+
+    private void initKeyboardNavigation() {
+        tableViewProfissional.setOnKeyPressed(event -> {
+            if (event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) {
+                int selectedIndex = tableViewProfissional.getSelectionModel().getSelectedIndex();
+
+                // Navegação para cima
+                if (event.getCode() == KeyCode.UP && selectedIndex > 0) {
+                    tableViewProfissional.getSelectionModel().select(selectedIndex - 1);
+                    tableViewProfissional.scrollTo(selectedIndex - 1);
+                    objProfissional = tableViewProfissional.getItems().get(selectedIndex - 1);
+                } // Navegação para baixo
+                else if (event.getCode() == KeyCode.DOWN && selectedIndex < tableViewProfissional.getItems().size() - 1) {
+                    tableViewProfissional.getSelectionModel().select(selectedIndex + 1);
+                    tableViewProfissional.scrollTo(selectedIndex + 1);
+                    objProfissional = tableViewProfissional.getItems().get(selectedIndex + 1);
+                }
+
+                // Consome o evento para evitar comportamento padrão indesejado
+                event.consume();
+            }
+        });
+
+        // Garante que a TableView possa receber foco
+        tableViewProfissional.setFocusTraversable(true);
     }
 
     @Override

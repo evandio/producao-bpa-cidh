@@ -2,6 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
@@ -12,27 +13,29 @@
 
 <AnchorPane id="AnchorPane" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.LoteBpaFormController">
    <children>
-      <Line endX="600.0000610351562" endY="53.50001525878906" layoutX="1.0" layoutY="80.0" startY="53.5" />
-      <VBox prefHeight="134.0" prefWidth="602.0">
+      <Line endX="595.0" endY="65.0" layoutX="1.0" layoutY="80.0" startY="65.0" />
+      <VBox prefHeight="150.0" prefWidth="602.0">
          <children>
             <HBox prefHeight="92.0" prefWidth="575.0" spacing="10.0">
                <children>
                   <VBox prefHeight="91.0" prefWidth="267.0">
                      <children>
                         <Label text="Profissional" />
-                        <TextField editable="false" />
+                        <TextField fx:id="txtProfissional" editable="false" />
                         <Label text="CBO" />
-                        <TextField editable="false" />
+                        <TextField fx:id="txtCbo" editable="false" />
                      </children>
                   </VBox>
-                  <VBox prefHeight="100.0" prefWidth="301.0">
+                  <VBox prefHeight="116.0" prefWidth="301.0">
                      <children>
                         <Label text="Especialidade" />
-                        <TextField editable="false" />
+                        <TextField fx:id="txtEspecialidade" editable="false" />
+                        <Label text="Data cadastro" />
+                        <DatePicker fx:id="dtpDataCadastro" />
                         <HBox prefHeight="100.0" prefWidth="200.0" spacing="15.0">
                            <children>
-                              <RadioButton mnemonicParsing="false" text="Manhã" />
-                              <RadioButton mnemonicParsing="false" text="Tarde" />
+                              <RadioButton fx:id="rbManha" mnemonicParsing="false" text="Manhã" />
+                              <RadioButton fx:id="rbTarde" mnemonicParsing="false" text="Tarde" />
                            </children>
                            <VBox.margin>
                               <Insets left="10.0" top="10.0" />
@@ -45,7 +48,23 @@
                   <Insets left="5.0" right="5.0" />
                </padding>
             </HBox>
-            <Button mnemonicParsing="false" text="Gravar" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Button fx:id="btProfissionais" mnemonicParsing="false" onAction="#onBtProfissionais" text="Profissionais">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+                  <Button fx:id="btGravar" mnemonicParsing="false" onAction="#onBtGravar" text="Gravar">
+                     <HBox.margin>
+                        <Insets left="10.0" />
+                     </HBox.margin>
+                  </Button>
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </HBox>
          </children>
       </VBox>
    </children>

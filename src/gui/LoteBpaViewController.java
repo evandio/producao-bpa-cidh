@@ -91,6 +91,7 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
         Stage parentStage = Utils.currentStage(event);
         
         LoteBpa obj = new LoteBpa();
+        obj.setProfissional(new Profissional());
         
         createDialogForm(obj, "/gui/LoteBpaForm.fxml", parentStage);
     }
@@ -101,10 +102,14 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
         Pane pane = loader.load();
         
         LoteBpaFormController controller = loader.getController();
+        controller.setLoteBpa(objLote);
+        controller.setLoteBpaService(new LoteBpaService());
+        controller.subscribeDataChangeListener(this);
+        controller.updateFormView();
         
         
         Stage dialogStage = new Stage();
-        dialogStage.setTitle("Cadastrar Lote");
+        dialogStage.setTitle("Cadastro de Lote BPA");
         dialogStage.setScene(new Scene(pane));
         dialogStage.setResizable(false);
         dialogStage.initOwner(parentStage);
@@ -112,7 +117,7 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
         dialogStage.showAndWait();
         
         }catch (IOException e){
-            Alerts.showAlert("IO Exception", "Erro ao carregar a View", e.getMessage(), AlertType.ERROR);
+            Alerts.showAlert("IO Exception", "Erro ao carregar a View de criação de Lote!", e.getMessage(), AlertType.ERROR);
         }
         
     }

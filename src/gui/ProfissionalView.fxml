@@ -24,7 +24,7 @@
       <ToolBar prefHeight="40.0" prefWidth="200.0">
         <items>
           <Button fx:id="btAssociaCbo" mnemonicParsing="false" onAction="#onBtAssociaCboAction" text="Associar CBO" />
-            <Button fx:id="apagar" mnemonicParsing="false" onAction="#onBtApagarAction" text="Button" />
+            <Button fx:id="btSelecionar" mnemonicParsing="false" onAction="#onBtSelecionarAction" text="Selecionar" />
         </items>
       </ToolBar>
       <HBox prefHeight="33.0" prefWidth="1039.0">
