@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="RelatorioProfissionais" language="groovy" pageWidth="555" pageHeight="802" columnWidth="555" leftMargin="0" rightMargin="0" topMargin="0" bottomMargin="0" uuid="c67fbfb3-d48e-4dc5-a76b-996e883fab42">
+	<property name="ireport.zoom" value="1.771561000000001"/>
+	<property name="ireport.x" value="0"/>
+	<property name="ireport.y" value="0"/>
+	<queryString>
+		<![CDATA[]]>
+	</queryString>
+	<field name="class" class="java.lang.Class">
+		<fieldDescription><![CDATA[class]]></fieldDescription>
+	</field>
+	<field name="dscFormacao" class="java.lang.String">
+		<fieldDescription><![CDATA[dscFormacao]]></fieldDescription>
+	</field>
+	<field name="dscUsuario" class="java.lang.String">
+		<fieldDescription><![CDATA[dscUsuario]]></fieldDescription>
+	</field>
+	<field name="insFormacao" class="java.lang.Integer">
+		<fieldDescription><![CDATA[insFormacao]]></fieldDescription>
+	</field>
+	<field name="isnUsuario" class="java.lang.Integer">
+		<fieldDescription><![CDATA[isnUsuario]]></fieldDescription>
+	</field>
+	<field name="numConselho" class="java.lang.String">
+		<fieldDescription><![CDATA[numConselho]]></fieldDescription>
+	</field>
+	<field name="objCboProf" class="model.entities.CboProfissional">
+		<fieldDescription><![CDATA[objCboProf]]></fieldDescription>
+	</field>
+	<field name="sglConselho" class="java.lang.String">
+		<fieldDescription><![CDATA[sglConselho]]></fieldDescription>
+	</field>
+	<background>
+		<band splitType="Stretch"/>
+	</background>
+	<title>
+		<band height="42" splitType="Stretch"/>
+	</title>
+	<columnHeader>
+		<band height="16" splitType="Stretch">
+			<staticText>
+				<reportElement x="2" y="0" width="127" height="15" uuid="16dcd72b-c998-4055-ba4e-d23593f02cb2"/>
+				<text><![CDATA[Profissional]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="226" y="0" width="100" height="15" uuid="aec276fc-ccb1-4ad4-9093-c51a9e211024"/>
+				<text><![CDATA[dscFormacao]]></text>
+			</staticText>
+			<staticText>
+				<reportElement x="383" y="0" width="100" height="16" uuid="eae1d90c-a573-41b6-a9b2-bffbf440dffa"/>
+				<text><![CDATA[objCboProf]]></text>
+			</staticText>
+		</band>
+	</columnHeader>
+	<detail>
+		<band height="17" splitType="Stretch">
+			<textField>
+				<reportElement x="3" y="2" width="220" height="14" uuid="f6d46cb7-e8eb-4892-99f4-74abb728a85c"/>
+				<textFieldExpression><![CDATA[$F{dscUsuario}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="226" y="2" width="154" height="14" uuid="a61f4566-9071-4ea4-86e0-005c2c5c118e"/>
+				<textFieldExpression><![CDATA[$F{dscFormacao}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement x="386" y="2" width="150" height="15" uuid="b0d093fd-df35-4eb6-93e2-2721c95b5d7f"/>
+				<textFieldExpression><![CDATA[$F{objCboProf}.getCbo().getDsc_cbo()]]></textFieldExpression>
+			</textField>
+		</band>
+	</detail>
+	<pageFooter>
+		<band height="15" splitType="Stretch"/>
+	</pageFooter>
+</jasperReport>
