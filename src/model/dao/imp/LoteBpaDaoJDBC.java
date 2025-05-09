@@ -100,7 +100,7 @@ public class LoteBpaDaoJDBC implements LoteBpaDao {
             st.setInt(1, obj.getProfissional().getIsnUsuario());
             st.setString(2, obj.getProfissional().getDscUsuario());
             st.setTimestamp(3, new java.sql.Timestamp(obj.getDataAtendimento().getTime()));
-            st.setInt(4, "Manhã".equals(obj.getTurno()) ? 1 : 2); // 1 = Manhã, 2 = Tarde
+            st.setInt(4, obj.getTurno()); // 1 = Manhã, 2 = Tarde
             st.setInt(5, obj.getQtdAtendimento() != null ? obj.getQtdAtendimento() : 0);
             st.setInt(6, obj.getLoteBpa());
 

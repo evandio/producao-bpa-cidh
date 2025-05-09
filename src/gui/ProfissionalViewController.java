@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.ResourceBundle;
+import javafx.animation.PauseTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -28,11 +29,10 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyEvent;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import javafx.util.Duration;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
 import model.services.CboProfissionalService;
@@ -69,10 +69,10 @@ public class ProfissionalViewController implements Initializable, DataChangeList
     @FXML
     private TextField filtroNome;
 
-    @FXML
-    public void onTextFieldFiltroKeyPress(KeyEvent event) {
-        updateTableView(filtroNome.getText());
-    }
+    //@FXML
+    //public void onTextFieldFiltroKeyPress(KeyEvent event) {
+    //    updateTableView(filtroNome.getText());
+    //}
 
     @FXML
     private Button btSelecionar;
@@ -129,6 +129,18 @@ public class ProfissionalViewController implements Initializable, DataChangeList
         if (btSelecionar != null) {
             btSelecionar.setVisible(isSelectionMode);
         }
+        
+        // Configura o filtro dinâmico no filtroNome com delay
+        PauseTransition pause = new PauseTransition(Duration.millis(300));
+        filtroNome.textProperty().addListener((obs, oldValue, newValue) -> {
+            pause.setOnFinished(event -> {
+                updateTableView(newValue);
+                // Restaura o foco no filtroNome após a atualização
+                filtroNome.requestFocus();
+                filtroNome.positionCaret(filtroNome.getText().length());
+            });
+            pause.playFromStart();
+        });
     }
 
     public void updateTableView(String nome) {
@@ -137,12 +149,14 @@ public class ProfissionalViewController implements Initializable, DataChangeList
         }
 
         List<Profissional> lista = service.localizarProfissionais(nome);
-        obsList = FXCollections.observableList(lista);
+        System.out.println("Profissionais encontrados: " + lista.size()); // Log de depuração
+        obsList = FXCollections.observableArrayList(lista);
         tableViewProfissional.setItems(obsList);
-        filtroNome.setFocusTraversable(false); //não focar na variavel filtroNome;
+        tableViewProfissional.refresh(); // Força a atualização visual
+        //filtroNome.setFocusTraversable(false); //não focar na variavel filtroNome;
 
         // Garante que a TableView tenha foco após atualizar
-        tableViewProfissional.requestFocus();
+        //tableViewProfissional.requestFocus();
         // Seleciona a primeira linha por padrão, se houver itens
         if (!obsList.isEmpty()) {
             tableViewProfissional.getSelectionModel().selectFirst();
@@ -171,6 +185,7 @@ public class ProfissionalViewController implements Initializable, DataChangeList
             controller.setService(new CboProfissionalService());
 
             controller.subscribeDataChangeListener(this);
+            System.out.println("Listener registrado: " + this); // Log de depuração
 
             //Injeta todos os CBOs no formulario
             controller.updateFormData();
@@ -240,6 +255,7 @@ public class ProfissionalViewController implements Initializable, DataChangeList
 
     @Override
     public void onDataChange() {
+        System.out.println("onDataChange chamado, atualizando tabela..."); // Log de depuração
         updateTableView("");
     }
 

@@ -29,7 +29,7 @@
       </ToolBar>
       <HBox prefHeight="33.0" prefWidth="1039.0">
          <children>
-            <TextField fx:id="filtroNome" onKeyReleased="#onTextFieldFiltroKeyPress" prefHeight="25.0" prefWidth="488.0" promptText="Localizr por nome">
+            <TextField fx:id="filtroNome" prefHeight="25.0" prefWidth="488.0" promptText="Localizr por nome">
                <HBox.margin>
                   <Insets left="5.0" top="5.0" />
                </HBox.margin>

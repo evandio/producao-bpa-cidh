@@ -143,9 +143,9 @@ public class LoteBpaFormController implements Initializable, DataChangeListener 
         }
 
         // Atualiza o turno
-        if (objLoteBpa.getTurno() != null && objLoteBpa.getTurno().equals("Manhã")) {
+        if (objLoteBpa.getTurno() != null && objLoteBpa.getTurno() == 1) {
             rbManha.setSelected(true);
-        } else if (objLoteBpa.getTurno() != null && objLoteBpa.getTurno().equals("Tarde")) {
+        } else if (objLoteBpa.getTurno() != null && objLoteBpa.getTurno() == 2) {
             rbTarde.setSelected(true);
         }
 
@@ -208,9 +208,23 @@ public class LoteBpaFormController implements Initializable, DataChangeListener 
             objLoteBpa.setDataAtendimento(date);
         }
 
+        // Atualiza o turno (o banco de dados espera um Integer: 1 para Manhã, 2 para Tarde)
         if (turnoGroup.getSelectedToggle() != null) {
             RadioButton selectedRadio = (RadioButton) turnoGroup.getSelectedToggle();
-            objLoteBpa.setTurno(selectedRadio.getText().equals("Manhã") ? 1 : 2);
+            if (selectedRadio == rbManha) {
+                objLoteBpa.setTurno(1); // Manhã
+            } else if (selectedRadio == rbTarde) {
+                objLoteBpa.setTurno(2); // Tarde
+            }
+            System.out.println("Turno definido como: " + objLoteBpa.getTurno()); // Log para depuração
+        } else {
+            throw new IllegalStateException("Nenhum turno selecionado!");
+        }
+
+        // Valida o turno antes de salvar (garante que seja 1 ou 2)
+        if (objLoteBpa.getTurno() == null || (objLoteBpa.getTurno() != 1 && objLoteBpa.getTurno() != 2)) {
+            Alerts.showAlert("Erro", null, "Turno inválido! Deve ser 1 (Manhã) ou 2 (Tarde).", AlertType.ERROR);
+            return;
         }
 
         // Salva no banco

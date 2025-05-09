@@ -24,6 +24,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert.AlertType;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableRow;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.Pane;
@@ -79,6 +80,7 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
 
         List<LoteBpa> lista = service.listaTodos();
         obsList = FXCollections.observableArrayList(lista);
+        tableViewLoteBpa.refresh();
         tableViewLoteBpa.setItems(obsList);
     }
 
@@ -89,37 +91,36 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
     public void onBtNovoBpaAction(ActionEvent event) {
         System.out.println("onBtNovoBpaAction");
         Stage parentStage = Utils.currentStage(event);
-        
+
         LoteBpa obj = new LoteBpa();
         obj.setProfissional(new Profissional());
-        
-        createDialogForm(obj, "/gui/LoteBpaForm.fxml", parentStage);
+
+        createDialogForm(obj, "/gui/LoteBpaForm.fxml", parentStage, "Cadastro de Lote BPA");
     }
 
-    private void createDialogForm(LoteBpa objLote, String absoluteName, Stage parentStage) {
+    private void createDialogForm(LoteBpa objLote, String absoluteName, Stage parentStage, String titulo) {
         try {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
-        Pane pane = loader.load();
-        
-        LoteBpaFormController controller = loader.getController();
-        controller.setLoteBpa(objLote);
-        controller.setLoteBpaService(new LoteBpaService());
-        controller.subscribeDataChangeListener(this);
-        controller.updateFormView();
-        
-        
-        Stage dialogStage = new Stage();
-        dialogStage.setTitle("Cadastro de Lote BPA");
-        dialogStage.setScene(new Scene(pane));
-        dialogStage.setResizable(false);
-        dialogStage.initOwner(parentStage);
-        dialogStage.initModality(Modality.WINDOW_MODAL);
-        dialogStage.showAndWait();
-        
-        }catch (IOException e){
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(absoluteName));
+            Pane pane = loader.load();
+
+            LoteBpaFormController controller = loader.getController();
+            controller.setLoteBpa(objLote);
+            controller.setLoteBpaService(new LoteBpaService());
+            controller.subscribeDataChangeListener(this);
+            controller.updateFormView();
+
+            Stage dialogStage = new Stage();
+            dialogStage.setTitle(titulo);
+            dialogStage.setScene(new Scene(pane));
+            dialogStage.setResizable(false);
+            dialogStage.initOwner(parentStage);
+            dialogStage.initModality(Modality.WINDOW_MODAL);
+            dialogStage.showAndWait();
+
+        } catch (IOException e) {
             Alerts.showAlert("IO Exception", "Erro ao carregar a View de criação de Lote!", e.getMessage(), AlertType.ERROR);
         }
-        
+
     }
 
     /**
@@ -128,6 +129,7 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
     @Override
     public void initialize(URL uri, ResourceBundle rb) {
         initializeNodes();
+        initDoubleClickHandler();
     }
 
     private void initializeNodes() {
@@ -150,8 +152,21 @@ public class LoteBpaViewController implements Initializable, DataChangeListener 
         Stage stage = (Stage) Main.getMainScene().getWindow();
         tableViewLoteBpa.prefHeightProperty().bind(stage.heightProperty());
     }
-    
-  
+
+    private void initDoubleClickHandler() {
+        tableViewLoteBpa.setRowFactory(tv -> {
+            TableRow<LoteBpa> row = new TableRow<>();
+            row.setOnMouseClicked(event -> {
+                if (event.getClickCount() == 2 && !row.isEmpty()) {
+                    LoteBpa selectedLote = row.getItem();
+                    System.out.println("Duplo clique no lote: " + selectedLote.getLoteBpa());
+                    Stage parentStage = Utils.currentStage(event);
+                    createDialogForm(selectedLote, "/gui/LoteBpaForm.fxml", parentStage, "Edição de Lote BPA");
+                }
+            });
+            return row;
+        });
+    }
 
     @Override
     public void onDataChange() {

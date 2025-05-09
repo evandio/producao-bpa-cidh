@@ -25,6 +25,7 @@ public class LoteBpaService {
             obj.setLoteBpa(chave);
             dao.inserir(obj);
         } else {
+            System.out.println("Atualizado o Lote!");
             dao.atualizar(obj);
         }
     }

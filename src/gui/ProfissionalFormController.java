@@ -13,6 +13,7 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
+import java.util.stream.Collectors;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -22,6 +23,7 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextField;
+import javafx.util.StringConverter;
 import model.entities.Cbo;
 import model.entities.CboProfissional;
 import model.entities.Profissional;
@@ -39,6 +41,7 @@ public class ProfissionalFormController implements Initializable {
     private ObservableList<Cbo> obsListCbo;
     private CboProfissionalService service;
     private CboProfissional objCboProf;
+    private List<Cbo> allCbos;
 
     private List<DataChangeListener> dataChangeListeners = new ArrayList<>();
 
@@ -83,6 +86,7 @@ public class ProfissionalFormController implements Initializable {
 
         try {
             service.saveOrUpdate(objProf);
+            System.out.println("Notificando listeners..."); // Log de depuração
             notifyDataChangeListener();
             Utils.currentStage(event).close();
         } catch (DbException e) {
@@ -103,8 +107,6 @@ public class ProfissionalFormController implements Initializable {
     public void setObjProf(Profissional objProf) {
         this.objProf = objProf;
     }
-    
-    
 
     public void setService(CboProfissionalService service) {
         this.service = service;
@@ -136,9 +138,14 @@ public class ProfissionalFormController implements Initializable {
             txtCbo.setText(objProf.getObjCboProf().getCbo().getDsc_cbo());
         }
 
-        List<Cbo> list = service.todosCbos();
-        obsListCbo = FXCollections.observableArrayList(list).sorted();
+        allCbos = service.todosCbos();
+        obsListCbo = FXCollections.observableArrayList(allCbos).sorted();
         cboxCbos.setItems(obsListCbo);
+
+        // Seleciona o CBO atual, se existir
+        if (objProf.getObjCboProf() != null && objProf.getObjCboProf().getCbo() != null) {
+            cboxCbos.getSelectionModel().select(objProf.getObjCboProf().getCbo());
+        }
 
     }
 
@@ -150,6 +157,7 @@ public class ProfissionalFormController implements Initializable {
      */
     @Override
     public void initialize(URL url, ResourceBundle rb) {
+
 
     }
 
