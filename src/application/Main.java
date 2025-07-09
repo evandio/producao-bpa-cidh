@@ -12,8 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.stage.Stage;
 
-
-
 /**
  *
  * @author evandio.pereira

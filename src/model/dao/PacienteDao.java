@@ -14,10 +14,12 @@ import model.entities.Paciente;
  */
 public interface PacienteDao {
 
+    //Nao implementado
     List<Paciente> encontrarPacientes(String dscNome);
 
     Paciente encontrarPaciente(String numProntuario);
 
+    //Nao implementado
     Paciente encontrarPaciente(Integer isnPaciente);
 
 }

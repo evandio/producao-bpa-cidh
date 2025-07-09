@@ -33,5 +33,4 @@ public class LoteBpaService {
     public boolean existsLoteBpa(Integer isnProfissional, Date dataAtendimento, int turno, Integer nrLote) {
         return dao.existsLoteBpa(isnProfissional, dataAtendimento, turno, nrLote);
     }
-
 }

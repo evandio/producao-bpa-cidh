@@ -7,8 +7,9 @@ package model.services;
 
 import java.util.List;
 import model.dao.DaoFactory;
-import model.dao.ProcedimentoDao;
 import model.entities.Procedimento;
+import model.dao.ProcedimentoDao;
+import model.entities.RelacaoProcedCbo;
 
 /**
  *
@@ -16,14 +17,23 @@ import model.entities.Procedimento;
  */
 public class ProcedimentoService {
 
-    private ProcedimentoDao daoGil = DaoFactory.createProcedimentoGil();
-    private ProcedimentoDao daoBpa = DaoFactory.createProcedimentoBpaDao();
+    private ProcedimentoDao daoAppGil = DaoFactory.createProcedimentoDaoGil();
+    private ProcedimentoDao daoAppBpa = DaoFactory.createProcedimentoDaoAppBpa();
 
     public List<Procedimento> listaProcedimentosGil() {
-        return daoGil.listaProcedimentoGil();
+        return daoAppGil.listaProcedimentoGil();
+    }
+    
+    public List <RelacaoProcedCbo> listaProcedCboGil(){
+        return daoAppGil.listaProcedCboGil();
     }
 
     public void gravarProcedimentoBpa(List<Procedimento> lista) {
-        daoBpa.gravarProcedimento(lista);
+        daoAppBpa.gravarProcedimentos(lista);
     }
+    
+    public void gravarProcedCbo(List<RelacaoProcedCbo> lista){
+        daoAppBpa.gravarProcedCbo(lista);
+    }
+
 }

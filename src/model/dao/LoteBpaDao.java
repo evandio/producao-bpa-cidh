@@ -5,6 +5,7 @@
  */
 package model.dao;
 
+import java.util.Date;
 import java.util.List;
 import model.entities.LoteBpa;
 
@@ -20,7 +21,7 @@ public interface LoteBpaDao {
 
     void atualizar(LoteBpa obj);
 
-    boolean existsLoteBpa(Integer isnProfissional, java.util.Date dataAtendimento, int turno, Integer nrLote);
+    boolean existsLoteBpa(Integer isnProfissional, Date dataAtendimento, int turno, Integer nrLote);
 
     void closeLote(Object obj);
 

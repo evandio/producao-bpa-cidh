@@ -19,5 +19,4 @@ public class GeradorChaveService {
     public long getProximaChave(String tabela) {
         return dao.getProximoCodigo(tabela);
     }
-
 }

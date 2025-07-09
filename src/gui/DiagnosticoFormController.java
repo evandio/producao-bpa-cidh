@@ -26,7 +26,6 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.DatePicker;
-import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import model.entities.Diagnostico;
 import model.exception.ValidationException;

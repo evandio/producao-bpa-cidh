@@ -39,11 +39,11 @@ public class DaoFactory {
         return new CboDaoJDBC(DB_Bpa.getConnection());
     }
 
-    public static ProcedimentoDao createProcedimentoGil() {
+    public static ProcedimentoDao createProcedimentoDaoGil() {
         return new ProcedimentoJDBC(DB_Gil.getConnection());
     }
 
-    public static ProcedimentoDao createProcedimentoBpaDao() {
+    public static ProcedimentoDao createProcedimentoDaoAppBpa() {
         return new ProcedimentoJDBC(DB_Bpa.getConnection());
     }
 

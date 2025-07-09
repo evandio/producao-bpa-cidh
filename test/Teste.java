@@ -1,10 +1,15 @@
 
 
 import db.DB_Bpa;
+import java.util.List;
 import model.dao.imp.GeradorDeChaveDaoJDBC;
 import model.entities.Diagnostico;
+import model.entities.Paciente;
+import model.entities.RelacaoProcedCbo;
 
 import model.services.DiagnosticoService;
+import model.services.PacienteService;
+import model.services.ProcedimentoService;
 
 
 
@@ -22,15 +27,13 @@ import model.services.DiagnosticoService;
 public class Teste {
 
     public static void main(String[] args) {
-        DiagnosticoService service = new DiagnosticoService();
         
-        Diagnostico d = new Diagnostico();
-        d.setDscDiagnostico("HAS");
+        ProcedimentoService service = new ProcedimentoService();
         
+        List<RelacaoProcedCbo> r = service.listaProcedCboGil();
         
-        service.inserirOuAtualizar(d);
-        
-        System.out.println("");
+        service.gravarProcedCbo(r);
+        System.out.println("finalizado");
         
     }
 }

@@ -8,7 +8,6 @@ package gui;
 import gui.listener.DataChangeListener;
 import gui.util.Alerts;
 import gui.util.Utils;
-import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;

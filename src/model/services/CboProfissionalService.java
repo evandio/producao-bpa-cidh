@@ -41,7 +41,4 @@ public class CboProfissionalService {
     public List<Cbo> todosCbos() {
         return daoCbo.listaTodosCbosBpa();
     }
-    
-   
-
 }
