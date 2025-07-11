@@ -22,6 +22,7 @@ public class LoteBpa implements Serializable{
     private Profissional profissional;
     private Integer qtdAtendimento;
     private Integer turno;
+    
     //private List<Atendimentos> atendimentos;
 
     public Integer getLoteBpa() {
